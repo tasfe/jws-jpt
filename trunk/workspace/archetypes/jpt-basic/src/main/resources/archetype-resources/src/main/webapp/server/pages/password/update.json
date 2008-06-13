@@ -1,0 +1,4 @@
+﻿{
+	actionMessages: [JPT.ctx.lang['tip.update.success']],
+	id: 1
+}

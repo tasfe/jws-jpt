@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-catalog>
+	<archetypes>
+		<archetype>
+			<groupId>jpt</groupId>
+			<artifactId>jpt-basic</artifactId>
+			<version>1.0</version>
+			<description>
+			<![CDATA[
+				Basic CRUD - basic support for Create, Read, Update, and Delete (CRUD) of User, Role, Permission, Menu, Resource, Constant, and Dictionary objects.
+			]]>
+			</description>
+		</archetype>
+	</archetypes>
+</archetype-catalog>

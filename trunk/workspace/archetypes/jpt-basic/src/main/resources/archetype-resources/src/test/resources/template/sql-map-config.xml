@@ -1,0 +1,58 @@
+﻿#set($ftl_st="#")
+#set($ftl_var="$")
+<${ftl_st}import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<${ftl_st}assign filename="/resources/sql-map-config.xml" />
+<${ftl_st}if pp.outputFileExists(filename)>
+<${ftl_st}assign filename="/tmp/resources/sql-map-config.xml" />
+</${ftl_st}if>
+<@pp.changeOutputFile name=filename />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+    
+    <properties resource="jpt.properties" />
+	
+    <settings
+    	enhancementEnabled="true"
+    	maxTransactions="20"
+    	maxRequests="32"
+    	maxSessions="10" />
+
+<${ftl_st}list doc.database.table as t>
+<${ftl_st}assign tname=t.@name?lower_case />
+<${ftl_st}assign model=g.getModel(tname) />
+<${ftl_st}if model?has_content>
+	<typeAlias alias="${ftl_var}{model}" type="${package}.model.${ftl_var}{model?cap_first}" />
+</${ftl_st}if>
+</${ftl_st}list>
+
+<${ftl_st}assign i=101 />
+<${ftl_st}list doc.database.table as t>
+<${ftl_st}assign tname=t.@name?lower_case />
+<${ftl_st}assign model=g.getModel(tname) />
+<${ftl_st}if model?has_content>
+<${ftl_st}assign tcode=g.getTcode(model,i) />
+<${ftl_st}if tcode==i?c>
+<${ftl_st}assign i=i+1 />
+</${ftl_st}if>
+	<sqlMap resource="sqlmaps/declare/T${ftl_var}{tcode}${ftl_var}{model?cap_first}.xml" />
+</${ftl_st}if>
+</${ftl_st}list>
+	
+	<sqlMap resource="sqlmaps/statement/T000Misc.xml" />
+<${ftl_st}assign i=101 />
+<${ftl_st}list doc.database.table as t>
+<${ftl_st}assign tname=t.@name?lower_case />
+<${ftl_st}assign model=g.getModel(tname) />
+<${ftl_st}if model?has_content>
+<${ftl_st}assign tcode=g.getTcode(model,i) />
+<${ftl_st}if tcode==i?c>
+<${ftl_st}assign i=i+1 />
+</${ftl_st}if>	
+	<sqlMap resource="sqlmaps/statement/T${ftl_var}{tcode}${ftl_var}{model?cap_first}.xml" />
+</${ftl_st}if>
+</${ftl_st}list>
+	
+</sqlMapConfig>

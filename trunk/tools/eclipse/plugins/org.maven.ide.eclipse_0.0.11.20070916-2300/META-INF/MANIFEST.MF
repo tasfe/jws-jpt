@@ -1,0 +1,66 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.0
+Created-By: 1.6.0_02-b05 (Sun Microsystems Inc.)
+Bundle-ManifestVersion: 2
+Bundle-Name: Maven Integration for Eclipse
+Bundle-SymbolicName: org.maven.ide.eclipse; singleton:=true
+Bundle-Version: 0.0.11.20070916-2300
+Bundle-Activator: org.maven.ide.eclipse.Maven2Plugin
+Bundle-Vendor: maven.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,org.eclipse.core.resources,or
+ g.eclipse.core.variables,org.eclipse.core.expressions,org.eclipse.cor
+ e.filesystem,org.eclipse.jface.text,org.eclipse.jdt.core,org.eclipse.
+ jdt.ui,org.eclipse.jdt.debug.ui,org.eclipse.jdt.launching,org.eclipse
+ .debug.core,org.eclipse.debug.ui,org.eclipse.ui,org.eclipse.ui.ide,or
+ g.eclipse.ui.console,org.eclipse.ui.forms,org.eclipse.ui.editors,org.
+ eclipse.ui.externaltools,org.eclipse.ui.workbench.texteditor,org.ecli
+ pse.ltk.core.refactoring
+Eclipse-AutoStart: true
+Bundle-ClassPath: m2plugin.jar,lib/lucene-core-2.2.0.jar,lib/maven-emb
+ edder-tycho-2.1.0.v20070905-1741.jar
+Bundle-RequiredExecutionEnvironment: J2SE-1.4,J2SE-1.5,JavaSE-1.6
+Export-Package: org.apache.maven,org.apache.maven.artifact,org.apache.
+ maven.artifact.deployer,org.apache.maven.artifact.factory,org.apache.
+ maven.artifact.handler,org.apache.maven.artifact.handler.manager,org.
+ apache.maven.artifact.installer,org.apache.maven.artifact.manager,org
+ .apache.maven.artifact.metadata,org.apache.maven.artifact.repository,
+ org.apache.maven.artifact.repository.layout,org.apache.maven.artifact
+ .repository.metadata,org.apache.maven.artifact.repository.metadata.io
+ .xpp3,org.apache.maven.artifact.resolver,org.apache.maven.artifact.re
+ solver.conflict,org.apache.maven.artifact.resolver.filter,org.apache.
+ maven.artifact.transform,org.apache.maven.artifact.versioning,org.apa
+ che.maven.cli,org.apache.maven.context,org.apache.maven.doxia.sink,or
+ g.apache.maven.embedder,org.apache.maven.embedder.execution,org.apach
+ e.maven.embedder.user,org.apache.maven.embedder.writer,org.apache.mav
+ en.execution,org.apache.maven.extension,org.apache.maven.lifecycle,or
+ g.apache.maven.lifecycle.binding,org.apache.maven.lifecycle.mapping,o
+ rg.apache.maven.lifecycle.model,org.apache.maven.lifecycle.model.io.x
+ pp3,org.apache.maven.lifecycle.plan,org.apache.maven.lifecycle.statem
+ gmt,org.apache.maven.messages,org.apache.maven.model,org.apache.maven
+ .model.io.jdom,org.apache.maven.model.io.xpp3,org.apache.maven.monito
+ r.event,org.apache.maven.monitor.logging,org.apache.maven.plugin,org.
+ apache.maven.plugin.descriptor,org.apache.maven.plugin.lifecycle,org.
+ apache.maven.plugin.lifecycle.io.xpp3,org.apache.maven.plugin.loader,
+ org.apache.maven.plugin.logging,org.apache.maven.plugin.version,org.a
+ pache.maven.profiles,org.apache.maven.profiles.activation,org.apache.
+ maven.profiles.io.jdom,org.apache.maven.profiles.io.xpp3,org.apache.m
+ aven.project,org.apache.maven.project.artifact,org.apache.maven.proje
+ ct.build,org.apache.maven.project.build.model,org.apache.maven.projec
+ t.build.profile,org.apache.maven.project.inheritance,org.apache.maven
+ .project.injection,org.apache.maven.project.interpolation,org.apache.
+ maven.project.overlay,org.apache.maven.project.path,org.apache.maven.
+ project.validation,org.apache.maven.reactor,org.apache.maven.reportin
+ g,org.apache.maven.settings,org.apache.maven.settings.io.jdom,org.apa
+ che.maven.settings.io.xpp3,org.apache.maven.settings.validation,org.a
+ pache.maven.wagon,org.apache.maven.wagon.authentication,org.apache.ma
+ ven.wagon.authorization,org.apache.maven.wagon.events,org.apache.mave
+ n.wagon.observers,org.apache.maven.wagon.providers.file,org.apache.ma
+ ven.wagon.providers.http,org.apache.maven.wagon.providers.ssh,org.apa
+ che.maven.wagon.providers.ssh.external,org.apache.maven.wagon.provide
+ rs.ssh.interactive,org.apache.maven.wagon.providers.ssh.jsch,org.apac
+ he.maven.wagon.providers.ssh.jsch.interactive,org.apache.maven.wagon.
+ providers.ssh.knownhost,org.apache.maven.wagon.proxy,org.apache.maven
+ .wagon.repository,org.apache.maven.wagon.resource,org.apache.maven.wa
+ gon.shared.http,org.maven.ide.eclipse,org.maven.ide.eclipse.embedder
+

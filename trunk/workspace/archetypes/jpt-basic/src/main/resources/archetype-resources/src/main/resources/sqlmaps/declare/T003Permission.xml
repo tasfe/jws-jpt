@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT003Fields">
+		t003.id AS t003_id,
+		t003.name AS t003_name,
+		t003.authority AS t003_authority,
+		t003.descr AS t003_descr
+	</sql>
+
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="sT003Result" class="permission">
+		<result property="id" column="t003_id" />
+		<result property="name" column="t003_name" />
+		<result property="authority" column="t003_authority" />
+		<result property="descr" column="t003_descr" />
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="c1T003Result" extends="sT003Result" class="permission">
+        <result property="resources" column="t003_id" select="getRescByPermis" />
+        <result property="menus" column="t003_id" select="getMenuByPermis" />
+    </resultMap>
+    
+</sqlMap>

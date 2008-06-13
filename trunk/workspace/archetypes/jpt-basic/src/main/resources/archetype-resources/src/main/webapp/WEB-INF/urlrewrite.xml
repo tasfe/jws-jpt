@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.0//EN"
+    "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
+
+<urlrewrite>
+
+	<!-- from /pages/user/edit/1234.html to /pages/user/edit.html -->
+	<rule>
+	    <from>^/pages/(\w+)/([\w-]+)/\d+\.html$</from>
+	    <to last="true">/pages/$1/$2.html</to>
+    </rule>
+    
+	<!-- from /pages/server/scripts/context.js to /server/scripts/context.js -->
+    <!-- from /pages/scripts/toolkit.js to /scripts/toolkit.js -->
+    <!-- from /pages/styles/default/basic.css to /styles/default/basic.css -->
+    <!-- from /pages/images/ico-1.gif to /images/ico-1.gif -->
+	<rule>
+	    <from>^/pages/((server|scripts|styles|images)/.*?\.(js|css|gif|jpg|jpeg|png))$</from>
+		<to>/$1</to>
+    </rule>
+    
+    <rule>
+	    <from>^/server/.*?\.(js|json|html|css|ftl)$</from>
+	    <set type="response-header" name="Cache-Control">no-store</set>
+    	<set type="response-header" name="Pragma">no-cache</set>
+    	<set type="response-header" name="Expires">0</set>	
+    </rule>
+    
+	<rule>
+	    <from>^/server/scripts/context.js$</from>
+	    <to last="true">/simple/js/context/base.action</to>
+    </rule>
+    
+    <rule>
+	    <from>^/server/scripts/validation.js$</from>
+	    <to last="true">/simple/js/validation/modelValidator.action</to>	
+    </rule>
+	
+	<!-- from /server/batch/cells.json to /batch/json/cells.action -->
+	<!-- from /server/batch/cells.html to /batch/html/cells.action -->
+	<rule>
+	    <from>^/server/batch/(\w+).(json|html)$</from>
+	    <to last="true">/batch/$2/$1.action</to>	
+    </rule>
+    
+	<!-- from /server/upload/menuImage.html to /upload/menuImage.action -->
+	<rule>
+	    <from>^/server/upload/(\w+).html$</from>
+	    <to last="true">/upload/$1.action</to>
+    </rule>
+    
+	<!-- from /server/public/navMenus.json to /default/json/navMenus.action -->
+	<!-- from /server/public/navMenus.html to /default/html/navMenus.action -->
+	<rule>
+	    <from>^/server/\w+/(\w+).(json|html)$</from>
+	    <to last="true">/default/$2/$1.action</to>	
+    </rule>
+
+	<!-- /server/pages/user/admin-update-name/1234.json set JPT_MODEL_NAME=user,JPT_MODEL_PREFIX=admin,JPT_MODEL_POSTFIX=name,model.id=1234 -->
+	<!-- /server/pages/user/admin-update-name/1234.html -->
+	<!-- /server/pages/user/admin-new-role.json -->
+	<!-- /server/pages/user/admin-new-role.html -->
+	<rule>
+	    <from>^/server/pages/(\w+)/(\w+)-\w+-(\w+)(/(\d+))?\.(json|html)$</from>
+	    <set name="JPT_MODEL_NAME">$1</set>
+    	<set name="JPT_MODEL_PREFIX">$2</set>
+    	<set name="JPT_MODEL_POSTFIX">$3</set>
+	    <set name="model.id">$5</set>
+    </rule>
+	
+	<!-- /server/pages/user/update-name/1234.json set JPT_MODEL_NAME=user,JPT_MODEL_POSTFIX=name,model.id=1234 -->
+	<!-- /server/pages/user/update-name/1234.html -->
+	<!-- /server/pages/user/new-role.json -->
+	<!-- /server/pages/user/new-role.html -->
+	<rule>
+	    <from>^/server/pages/(\w+)/\w+-(\w+)(/(\d+))?\.(json|html)$</from>
+	    <set name="JPT_MODEL_NAME">$1</set>
+    	<set name="JPT_MODEL_POSTFIX">$2</set>
+	    <set name="model.id">$4</set>
+    </rule>
+	
+	<!-- /server/pages/user/update/1234.json set JPT_MODEL_NAME=user,model.id=1234 -->
+	<!-- /server/pages/user/update/1234.html -->
+	<!-- /server/pages/user/new.json -->
+	<!-- /server/pages/user/new.html -->
+	<rule>
+	    <from>^/server/pages/(\w+)/\w+(/(\d+))?\.(json|html)$</from>
+	    <set name="JPT_MODEL_NAME">$1</set>
+    	<set name="model.id">$3</set>
+    </rule>
+
+	<!-- from /server/pages/user/update/1234.json to /basic/json/update/user.action -->
+	<!-- from /server/pages/user/update/1234.html to /basic/html/update/user.action -->
+    <rule>
+	    <from>^/server/pages/(\w+)/([\w-])+(/(\d+))?\.(json|html)$</from>
+	    <to last="true">/basic/$5/$2/$1.action</to>
+    </rule>
+
+</urlrewrite>
+

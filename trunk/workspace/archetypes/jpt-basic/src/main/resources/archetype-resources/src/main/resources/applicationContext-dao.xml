@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-lazy-init="true">
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+    </bean>
+    
+    <bean id="sqlExecutor" class="${package}.dao.ibatis.ext.JptSqlExecutor">
+		<property name="dialect">
+			<bean class="${package}.dao.dialect.${jdbc.dialect}Dialect" />
+		</property>
+	</bean>
+	
+	<bean id="sqlMapClient" class="${package}.dao.ibatis.ext.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:/sql-map-config.xml</value>
+        </property>
+        <property name="sqlExecutor">
+			<ref bean="sqlExecutor" />
+		</property>
+        <property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+    </bean>
+    
+    <bean id="dao" class="${package}.dao.ibatis.BasicDaoiBatis">
+        <property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient" />
+		</property>
+    </bean>
+
+</beans>

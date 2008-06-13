@@ -1,0 +1,136 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Permission">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getPermissions" resultMap="Declare.sT003Result">
+        SELECT <include refid="sT003Fields" />
+        FROM t_permissions t003
+    </select>
+    
+    <select id="getAllpermis" resultMap="Declare.sT003Result">
+        SELECT <include refid="sT003Fields" />
+        FROM t_permissions t003
+    </select>
+
+    <select id="getPermission" resultMap="Declare.c1T003Result">
+        SELECT <include refid="sT003Fields" />
+        FROM t_permissions t003
+        WHERE t003.id=#id#
+    </select>
+    
+    <select id="getRescByPermis" resultMap="Declare.sT004Result">
+        SELECT <include refid="sT004Fields" />
+        FROM t_permis_res t,t_resources t004
+        WHERE t.permis_id=#id# AND t004.id=t.res_id
+    </select>
+    
+    <select id="getMenuByPermis" resultMap="Declare.sT005Result">
+        SELECT <include refid="sT005Fields" />
+        FROM t_menu_permis t,t_menus t005
+        WHERE t.permis_id=#id# AND t005.id=t.menu_id
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addPermission">
+        INSERT INTO t_permissions(
+			name,
+			authority,
+			descr
+        ) VALUES (
+        	#name#,
+        	#authority#,
+        	#descr#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_permissions')}</selectKey>
+    </insert>
+    
+    <sql id="addResc">
+        INSERT INTO t_permis_res(
+        	permis_id,
+        	res_id
+        )
+        SELECT
+        	#p0.id#,
+        	id
+        FROM t_resources
+        WHERE
+        	<isEmpty property="p0.rescids">
+        	id=${NaN}
+        	</isEmpty>
+        	<isNotEmpty property="p0.rescids">
+        	id IN(<iterate property="p0.rescids" conjunction=",">#p0.rescids[]#</iterate>)
+        	</isNotEmpty>
+	</sql>
+	
+	<sql id="addMenus">
+        INSERT INTO t_menu_permis(
+        	permis_id,
+        	menu_id
+        )
+        SELECT
+        	#p0.id#,
+        	id
+        FROM t_menus
+        WHERE
+        	<isEmpty property="p0.menuids">
+        	id=${NaN}
+        	</isEmpty>
+        	<isNotEmpty property="p0.menuids">
+        	id IN(<iterate property="p0.menuids" conjunction=",">#p0.menuids[]#</iterate>)
+        	</isNotEmpty>
+	</sql>
+	
+	<insert id="addPermission.1.i">
+	<include refid="addResc" />
+    </insert>
+    
+    <insert id="addPermission.2.i">
+	<include refid="addMenus" />
+    </insert>
+	
+    <update id="updatePermission">
+        UPDATE t_permissions
+		SET
+			name=#name#,
+			authority=#authority#,
+			descr=#descr#
+        WHERE id=#id#
+    </update>
+    
+    <delete id="updatePermission.1.u">
+        DELETE FROM t_permis_res
+        WHERE permis_id=#p0.id#
+    </delete>
+    
+    <insert id="updatePermission.2.u">
+	<include refid="addResc" />
+    </insert>
+    
+    <delete id="updatePermission.3.u">
+        DELETE FROM t_menu_permis
+        WHERE permis_id=#p0.id#
+    </delete>
+    
+    <insert id="updatePermission.4.u">
+	<include refid="addMenus" />
+    </insert>
+    
+	<delete id="deletePermission">
+        DELETE FROM t_permissions
+        WHERE ${isChkIDs()}
+    </delete>
+
+</sqlMap>

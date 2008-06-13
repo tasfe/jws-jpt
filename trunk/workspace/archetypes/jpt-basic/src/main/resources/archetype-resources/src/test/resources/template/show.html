@@ -1,0 +1,33 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#assign filename="/webapp/pages/${model}/show.html" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/webapp/pages/${model}/show.html" />
+</#if>
+<@pp.changeOutputFile name=filename />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link type="text/css" media="all" rel="stylesheet" href="../../styles/default/basic.css" />
+<link type="text/css" media="all" rel="stylesheet" href="../../styles/default/show.css" />
+
+<script type="text/javascript" src="../../scripts/jquery.js?v=1.2.3"></script>
+<script type="text/javascript" src="../../scripts/toolkit.js?v=1.0.0"></script>
+<script type="text/javascript" src="../../scripts/global.js?v=1.0.0"></script>
+
+</head>
+<body>
+<textarea id="main_jst" style="display:none;">
+
+</textarea>
+<div id="main"></div>
+</body>
+</html>
+</#if>
+</#list>

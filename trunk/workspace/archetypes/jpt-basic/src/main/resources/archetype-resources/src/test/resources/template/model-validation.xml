@@ -1,0 +1,50 @@
+﻿#set($ftl_st="#")
+#set($ftl_var="$")
+<${ftl_st}import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<${ftl_st}list doc.database.table as t>
+<${ftl_st}assign tname=t.@name?lower_case />
+<${ftl_st}assign model=g.getModel(tname) />
+<${ftl_st}if model?has_content>
+<${ftl_st}assign filename="/resources/${packageInPathFormat}/model/${ftl_var}{model?cap_first}-validation.xml" />
+<${ftl_st}if pp.outputFileExists(filename)>
+<${ftl_st}assign filename="/tmp/resources/${packageInPathFormat}/model/${ftl_var}{model?cap_first}-validation.xml" />
+</${ftl_st}if>
+<@pp.changeOutputFile name=filename />
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+<${ftl_st}list t.column as c>
+<${ftl_st}assign dbtype=c.@type?upper_case />
+<${ftl_st}assign javatype=typeMapping[dbtype]!'' />
+<${ftl_st}assign validator=typeValidatorMapping[dbtype]! />
+<${ftl_st}assign fname=g.getFname(c.@name) />
+<${ftl_st}if fname!="id">
+	<field name="fields.${ftl_var}{model}.${ftl_var}{fname}">
+<${ftl_st}if c.@required='true'>
+<${ftl_st}if javatype='String'>
+		<field-validator type="requiredstring">
+<${ftl_st}else>
+		<field-validator type="required">
+</${ftl_st}if>
+            <message key="errors.model.required"/>
+        </field-validator>
+</${ftl_st}if>
+<${ftl_st}if validator?has_content>
+        <field-validator type="${ftl_var}{validator}">
+            <message key="errors.model.${ftl_var}{validator}"/>
+        </field-validator>
+</${ftl_st}if>
+<${ftl_st}if javatype='String'>
+        <field-validator type="stringlength">
+			<param name="maxLength">${ftl_var}{c.@size}</param>
+            <param name="trim">true</param>
+            <message key="errors.model.maxlength"/>
+        </field-validator>
+</${ftl_st}if>
+    </field>
+</${ftl_st}if>
+</${ftl_st}list>
+</validators>
+</${ftl_st}if>
+</${ftl_st}list>

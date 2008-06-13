@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-lazy-init="true">
+
+	<bean id="basicModelInterceptor" class="${package}.webapp.interceptor.BasicModelInterceptor" />
+	
+	<bean id="conversionErrorInterceptor" class="${package}.webapp.interceptor.ConversionErrorInterceptor" />
+	
+	<bean id="loginUserInterceptor" class="${package}.webapp.interceptor.LoginUserInterceptor" />
+    
+    <bean id="baseJptAction" class="${package}.webapp.action.BaseAction" />
+		
+	<bean id="basicJptAction" class="${package}.webapp.action.BasicAction" scope="prototype">
+        <property name="manager" ref="manager"/>
+    </bean>
+    
+    <bean id="batchJptAction" class="${package}.webapp.action.BatchAction" scope="prototype">
+        <property name="manager" ref="manager"/>
+    </bean>
+
+	<bean id="defaultJptAction" class="${package}.webapp.action.DefaultAction" scope="prototype">
+        <property name="manager" ref="manager"/>
+    </bean>
+	
+	<bean id="uploadJptAction" class="${package}.webapp.action.UploadAction" scope="prototype">
+        <property name="manager" ref="fileManager"/>
+    </bean>
+    
+	<bean id="modelValidatorJptAction" class="${package}.webapp.action.ModelValidatorAction" scope="prototype" />
+
+</beans>
