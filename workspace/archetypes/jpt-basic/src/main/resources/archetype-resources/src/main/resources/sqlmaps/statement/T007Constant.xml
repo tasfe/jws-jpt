@@ -1,0 +1,63 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Constant">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getConstants" resultMap="Declare.sT007Result">
+        SELECT <include refid="sT007Fields" />
+        FROM t_constants t007
+        WHERE t007.predefined&lt;&gt;${'$'}{flag.predefined}
+    </select>
+    
+    <select id="getAllconst" resultMap="Declare.sT007Result">
+        SELECT <include refid="sT007Fields" />
+        FROM t_constants t007
+    </select>
+    
+    <select id="getConstant" resultMap="Declare.sT007Result">
+        SELECT <include refid="sT007Fields" />
+        FROM t_constants t007
+        WHERE t007.id=#id#
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addConstant">
+        INSERT INTO t_constants(
+        	name,
+        	value,
+        	descr
+        ) VALUES (
+        	#name#,
+        	#value#,
+        	#descr#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_constants')}</selectKey>
+    </insert>
+    
+    <update id="updateConstant">
+        UPDATE t_constants
+		SET
+			name=#name#,
+			value=#value#,
+			descr=#descr#
+        WHERE id=#id#
+    </update>
+    
+	<delete id="deleteConstant">
+        DELETE FROM t_constants
+        WHERE ${isChkIDs()} AND ${isNotPredefined()} AND predefined&lt;&gt;${'$'}{flag.predefined2}
+    </delete>
+
+</sqlMap>

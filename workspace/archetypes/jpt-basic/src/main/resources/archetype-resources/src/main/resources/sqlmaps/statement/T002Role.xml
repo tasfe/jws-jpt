@@ -1,0 +1,96 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Role">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getRoles" resultMap="Declare.sT002Result">
+        SELECT <include refid="sT002Fields" />
+        FROM t_roles t002
+    </select>
+    
+    <select id="getAllrole" resultMap="Declare.sT002Result">
+        SELECT <include refid="sT002Fields" />
+        FROM t_roles t002
+    </select>
+
+    <select id="getRole" resultMap="Declare.c1T002Result">
+        SELECT <include refid="sT002Fields" />
+        FROM t_roles t002
+        WHERE t002.id=#id#
+    </select>
+    
+    <select id="getPermisByRole" resultMap="Declare.sT003Result">
+        SELECT <include refid="sT003Fields" />
+        FROM t_role_permis t,t_permissions t003
+        WHERE t.role_id=#id# AND t003.id=t.permis_id
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addRole">
+        INSERT INTO t_roles(
+			name,
+			descr
+        ) VALUES (
+        	#name#,
+        	#descr#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_roles')}</selectKey>
+    </insert>
+    
+    <sql id="addPermis">
+        INSERT INTO t_role_permis(
+        	role_id,
+        	permis_id
+        )
+        SELECT
+        	#p0.id#,
+        	id
+        FROM t_permissions
+        WHERE
+        	<isEmpty property="p0.permisids">
+        	id=${NaN}
+        	</isEmpty>
+        	<isNotEmpty property="p0.permisids">
+        	id IN(<iterate property="p0.permisids" conjunction=",">#p0.permisids[]#</iterate>)
+        	</isNotEmpty>
+	</sql>
+	
+	<insert id="addRole.1.i">
+	<include refid="addPermis" />
+    </insert>
+	
+    <update id="updateRole">
+        UPDATE t_roles
+		SET
+			name=#name#,
+			descr=#descr#
+        WHERE id=#id#
+    </update>
+    
+    <delete id="updateRole.1.u">
+        DELETE FROM t_role_permis
+        WHERE role_id=#p0.id#
+    </delete>
+    
+    <insert id="updateRole.2.u">
+	<include refid="addPermis" />
+    </insert>
+    
+	<delete id="deleteRole">
+        DELETE FROM t_roles
+        WHERE ${isChkIDs()}
+    </delete>
+
+</sqlMap>

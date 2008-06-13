@@ -1,0 +1,85 @@
+<project>
+	<taskdef name="fmpp" classname="fmpp.tools.AntTask" />
+	<taskdef name="databaseToDdl" classname="org.apache.ddlutils.task.DatabaseToDdlTask" />
+	
+	<property name="modelname" value="database"/>
+	<property name="catalogpattern" value=""/>
+	<property name="schemapattern" value=""/>
+	<property name="platform" value=""/>
+	
+	<target name="generate">
+		<tstamp>
+			<format property="build.time" pattern="yyyyMMddhhmmss" />
+		</tstamp>
+		
+		<property name="schema" value="schema-${build.time}.xml" />
+
+		<antcall target="export">
+			<param name="modelname" value="${modelname}"/>
+			<param name="catalogpattern" value="${catalogpattern}"/>
+			<param name="platform" value="${platform}"/>
+			<param name="jdbc.url" value="${jdbc.url}"/>
+			<param name="jdbc.url" value="${jdbc.url}"/>
+			<param name="jdbc.driverClassName" value="${jdbc.driverClassName}"/>
+			<param name="jdbc.username" value="${jdbc.username}"/>
+			<param name="jdbc.password" value="${jdbc.password}"/>
+			<param name="sourceRoot" value="${sourceRoot}"/>
+			<param name="schema" value="${schema}"/>
+		</antcall>
+
+		<antcall target="custom-generate">
+			<param name="sourceRoot" value="${sourceRoot}"/>
+			<param name="outputRoot" value="${outputRoot}"/>
+			<param name="outputEncoding" value="${outputEncoding}"/>
+			<param name="excludes" value="${excludes}"/>
+			<param name="schema" value="${schema}"/>
+		</antcall>
+
+		<delete file="${sourceRoot}/${schema}"/>		
+	</target>
+	
+	<target name="export">
+		<property name="schema.orig" value="${schema}.orig" />
+		
+		<databaseToDdl modelname="${modelname}"
+					   catalogpattern="${catalogpattern}"
+					   schemapattern="${schemapattern}"
+					   databasetype="${platform}">
+			<database url="${jdbc.url}"
+					  driverClassName="${jdbc.driverClassName}"
+					  username="${jdbc.username}"
+					  password="${jdbc.password}"/>
+			<writeSchemaToFile outputFile="${sourceRoot}/${schema.orig}" />
+		</databaseToDdl>
+		
+		<copy file="${sourceRoot}/${schema.orig}"
+			  tofile="${sourceRoot}/${schema}"
+			  outputEncoding="UTF-8" />
+
+		<delete file="${sourceRoot}/${schema.orig}" />
+		
+		<replace file="${sourceRoot}/${schema}" value="" encoding="UTF-8">
+			<replacetoken><![CDATA[<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database">]]></replacetoken>
+		</replace>
+	</target>
+	
+	<target name="custom-generate">
+		<fmpp sourceRoot="${sourceRoot}"
+			  outputRoot="${outputRoot}"
+			  outputEncoding="${outputEncoding}"
+			  excludes="${excludes} ${schema} schema*.xml"
+			  data="doc:xml(${schema})">
+		</fmpp>
+	</target>
+	
+	<target name="parse">
+		<fmpp sourceRoot="${sourceRoot}"
+			  outputRoot="${outputRoot}"
+			  outputEncoding="${outputEncoding}"
+			  includes="${includes}"
+			  excludes="${excludes}"
+			  data="${data}">
+		</fmpp>
+	</target>
+
+</project>  

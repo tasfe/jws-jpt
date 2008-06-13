@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT005Fields">
+		t005.id AS t005_id,
+		t005.name AS t005_name,
+		t005.code AS t005_code,
+		t005.target AS t005_target,
+		t005.url AS t005_url,
+		t005.suburl AS t005_suburl,
+		t005.img AS t005_img,
+		t005.parent_id AS t005_parentId,
+		t005.display_order AS t005_displayOrder
+	</sql>
+	
+	<sql id="sT005aFields">
+		t005a.id AS t005a_id,
+		t005a.name AS t005a_name
+	</sql>
+
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="sT005Result" class="menu">
+        <result property="id" column="t005_id" />
+        <result property="name" column="t005_name" />
+        <result property="code" column="t005_code" />
+        <result property="target" column="t005_target" />
+        <result property="url" column="t005_url" />
+        <result property="suburl" column="t005_suburl" />
+        <result property="img" column="t005_img" />
+        <result property="parentId" column="t005_parentId" />
+        <result property="displayOrder" column="t005_displayOrder" />
+    </resultMap>
+    
+    <resultMap id="sT005aResult" class="menu">
+        <result property="id" column="t005a_id" />
+        <result property="name" column="t005a_name" />
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="c2T005Result" extends="sT005Result" class="menu">
+        <result property="parent" resultMap="Declare.sT005aResult" />
+    </resultMap>
+    
+</sqlMap>

@@ -1,0 +1,29 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#assign filename="/webapp/server/pages/${model}/index.json" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/webapp/server/pages/${model}/index.json" />
+</#if>
+<@pp.changeOutputFile name=filename />
+{
+	'${model}s' : [
+<#list 1..10 as i>
+		{
+<#list t.column as c>
+<#assign fname=g.getFname(c.@name) />
+			'${fname}' : <#if fname=='id'>${i}<#else>null</#if><#if c_has_next>,</#if>
+</#list>	
+		}<#if i_has_next>,</#if>
+</#list>
+	],
+	pager : {
+		totalRows : 31,
+		limit : 10
+	}
+}
+</#if>
+</#list>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+       					   http://www.springframework.org/schema/aop 
+       					   http://www.springframework.org/schema/aop/spring-aop-2.0.xsd 
+       					   http://www.springframework.org/schema/tx 
+       					   http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+       default-lazy-init="true">
+
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* *..service.*Manager.*(..))" />
+    </aop:config>
+    
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+        	<tx:method name="get*" read-only="true" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+
+    <bean id="mailEngine" class="${package}.service.MailEngine">
+        <property name="mailSender">
+        	<ref local="mailSender" />
+        </property>
+        <property name="freemarkerConfig">
+        	<ref local="freemarkerConfig" />
+        </property>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="username" value="master.jpt"/>
+        <property name="password" value="jpt"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.timeout">25000</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.port">465</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+			</props>
+		</property>
+    </bean>
+
+    <bean id="freemarkerConfig" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPaths">
+	        <list>
+	        	<value>/mail/</value>
+	        	<value>/scripts/</value>
+	        	<value>/server/scripts/</value>
+	        </list>
+        </property>
+        <property name="defaultEncoding" value="utf-8" />
+    </bean>
+
+    <bean id="cacheManager" class="${package}.service.impl.CacheManagerImpl" init-method="initialize">
+        <property name="userCache" ref="userCache" />
+      	<property name="resourceCache" ref="resourceCache" />
+      	<property name="dao" ref="dao"/>
+    </bean>
+     
+	<bean id="resourceCache" class="${package}.security.resourcedetails.EhCacheBasedResourceCache">
+		<property name="cache">
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<ref local="ehcacheManager" />
+				</property>
+				<property name="cacheName" value="resourceCache" />
+			</bean>
+		</property>
+	</bean>	
+
+	<bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<ref local="ehcacheManager" />
+				</property>
+				<property name="cacheName" value="userCache" />
+			</bean>
+		</property>
+	</bean>	
+
+	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+
+    <bean id="manager" class="${package}.service.impl.BasicManagerImpl">
+        <property name="dao" ref="dao"/>
+    </bean>
+    
+    <bean id="fileManager" class="${package}.service.impl.DefaultFileManagerImpl">
+    	<property name="dao" ref="dao"/>
+    </bean>
+    
+	<bean id="userManager" class="${package}.service.impl.UserManagerImpl">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="dao" ref="dao"/>
+    </bean>
+
+</beans>

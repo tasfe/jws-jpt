@@ -1,0 +1,58 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#assign i=101 />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#assign tcode=g.getTcode(model,i) />
+<#if tcode==i?c>
+<#assign i=i+1 />
+</#if>
+<#assign filename="/resources/sqlmaps/declare/T${tcode}${model?cap_first}.xml" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/resources/sqlmaps/declare/T${tcode}${model?cap_first}.xml" />
+</#if>
+<@pp.changeOutputFile name=filename />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT${tcode}Fields">
+<#list t.column as c>
+<#assign cname=c.@name?lower_case />
+<#assign fname=g.getFname(cname) />
+		t${tcode}.${cname} AS t${tcode}_${fname}<#if c_has_next>,</#if>
+</#list>
+	</sql>
+
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="sT${tcode}Result" class="${model}">
+<#list t.column as c>
+<#assign cname=c.@name?lower_case />
+<#assign fname=g.getFname(cname) />
+		<result property="${fname}" column="t${tcode}_${fname}" />
+</#list>
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+</sqlMap>
+</#if>
+</#list>

@@ -1,0 +1,40 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+	<field name="fields.dictionary.name">
+        <field-validator type="stringlength">
+			<param name="maxLength">20</param>
+            <param name="trim">true</param>
+            <message key="errors.model.maxlength"/>
+        </field-validator>
+    </field>
+	<field name="fields.dictionary.asscNames">
+        <field-validator type="stringlength">
+			<param name="maxLength">200</param>
+            <param name="trim">true</param>
+            <message key="errors.model.maxlength"/>
+        </field-validator>
+    </field>
+	<field name="fields.dictionary.text">
+        <field-validator type="stringlength">
+			<param name="maxLength">100</param>
+            <param name="trim">true</param>
+            <message key="errors.model.maxlength"/>
+        </field-validator>
+    </field>
+	<field name="fields.dictionary.descr">
+        <field-validator type="stringlength">
+			<param name="maxLength">200</param>
+            <param name="trim">true</param>
+            <message key="errors.model.maxlength"/>
+        </field-validator>
+    </field>
+	<field name="fields.dictionary.displayOrder">
+		<field-validator type="required">
+            <message key="errors.model.required"/>
+        </field-validator>
+        <field-validator type="int">
+            <message key="errors.model.int"/>
+        </field-validator>
+    </field>
+</validators>

@@ -1,0 +1,68 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#assign filename="/webapp/pages/${model}/new.html" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/webapp/pages/${model}/new.html" />
+</#if>
+<@pp.changeOutputFile name=filename />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link type="text/css" media="all" rel="stylesheet" href="../../styles/default/basic.css" />
+<link type="text/css" media="all" rel="stylesheet" href="../../styles/default/edit.css" />
+<style type="text/css">
+<!--
+
+-->
+</style>
+
+<script type="text/javascript" src="../../scripts/jquery.js?v=1.2.3"></script>
+<script type="text/javascript" src="../../scripts/toolkit.js?v=1.0.0"></script>
+<script type="text/javascript" src="../../scripts/global.js?v=1.0.0"></script>
+<script type="text/javascript">
+<!--
+function prepare(data){
+	return false;
+}
+
+function initialize(data){
+	loadScripts2([JPT.ctx.base + '/server/scripts/validation.js?model=${model}']);
+}
+//-->
+</script>
+
+</head>
+<body>
+<textarea id="main_jst" style="display:none;">
+<form name="${model}Form" id="${model}Form" method="post" action="${'$'}{JPT.ctx.base}/pages/${model}/create.html">
+	<div>
+	
+	</div>
+	<ul>
+<#list t.column as c>
+<#assign fname=g.getFname(c.@name) />
+<#if fname!="id">
+		<li>
+			<label for="model_${fname}">${fname}:</label>
+			<input type="text" class="text" name="model.${fname}" id="model_${fname}" value="" />
+		</li>
+</#if>
+</#list>
+		<li class="op">
+			<input type="submit" class="jpt-ajax button" name="method:create" value="${'$'}{JPT.ctx.lang['op.save']}" />
+			<input type="button" class="jpt-back button" value="${'$'}{JPT.ctx.lang['op.back']}" />
+		</li>
+	</ul>
+</form>
+</textarea>
+<div id="main"></div>
+</body>
+</html>
+</#if>
+</#list>

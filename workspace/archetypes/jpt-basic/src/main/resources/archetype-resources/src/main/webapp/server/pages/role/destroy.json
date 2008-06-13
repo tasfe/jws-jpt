@@ -1,0 +1,4 @@
+{
+	actionMessages: [JPT.ctx.lang['tip.destroy.success']],
+	id: 1
+}

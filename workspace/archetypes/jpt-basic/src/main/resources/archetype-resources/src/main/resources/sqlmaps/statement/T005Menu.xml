@@ -1,0 +1,109 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Menu">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getMenus" resultMap="Declare.c2T005Result">
+        SELECT <include refid="sT005Fields" />,<include refid="sT005aFields" />
+        FROM t_menus t005 LEFT JOIN t_menus t005a ON t005.parent_id=t005a.id
+		<dynamic prepend="ORDER BY">
+        	<isNotNull property="sorters">t005_code</isNotNull>
+		</dynamic>
+    </select>
+    
+    <select id="getAllmenu" resultMap="Declare.sT005Result">
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005
+    </select>
+
+    <select id="getMenu" resultMap="Declare.sT005Result">
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005
+        WHERE t005.id=#id#
+    </select>
+	
+	<select id="getNavMenus" resultMap="Declare.sT005Result">
+		<isParameterPresent>
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005,t_user_role t1,t_role_permis t2,t_menu_permis t3
+        WHERE t005.id=t3.menu_id AND t1.user_id=#loginUser.id# AND t1.role_id=t2.role_id AND t2.permis_id=t3.permis_id
+        UNION
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005,t_user_permis t4,t_menu_permis t3
+        WHERE t005.id=t3.menu_id AND t4.user_id=#loginUser.id# AND t4.permis_id=t3.permis_id
+        ORDER BY t005_code
+        </isParameterPresent>
+        <isNotParameterPresent>
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005
+        WHERE t005.id=${NaN}
+        </isNotParameterPresent>
+    </select>
+    
+    <select id="getTopMenus" resultMap="Declare.sT005Result">
+        SELECT <include refid="sT005Fields" />
+        FROM t_menus t005
+        WHERE t005.parent_id IS NULL
+    </select>
+    
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addMenu">
+        INSERT INTO t_menus(
+			name,
+			url,
+			suburl,
+			img,
+			target,
+			parent_id,
+			display_order
+        ) VALUES (
+        	#name#,
+        	#url#,
+        	#suburl#,
+        	#img#,
+        	#target#,
+        	#parentId#,
+        	#displayOrder#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_menus')}</selectKey>
+    </insert>
+    
+    <update id="addMenu.1.u">
+        UPDATE t_menus
+		SET
+			code='$p0.parentId$/$p0.id$'
+        WHERE id=#p0.id#
+    </update>
+    
+    <update id="updateMenu">
+        UPDATE t_menus
+		SET
+			code='$parentId$/$id$',
+			name=#name#,
+			url=#url#,
+			suburl=#suburl#,
+			img=#img#,
+			target=#target#,
+			parent_id=#parentId#,
+			display_order=#displayOrder#
+        WHERE id=#id#
+    </update>
+    
+	<delete id="deleteMenu">
+        DELETE FROM t_menus
+        WHERE ${isChkIDs()}
+    </delete>
+
+</sqlMap>

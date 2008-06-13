@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-lazy-init="true">
+
+	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**/images/**=#NONE#
+				/**/scripts/**=#NONE#
+				/**/styles/**=#NONE#
+				/**/public/**=#NONE#
+				/*.*=#NONE#
+				/=#NONE#
+				/**=httpSessionContextIntegrationFilter,rememberMeProcessingFilter,logoutFilter,authenticationProcessingFilter,basicProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+			</value>
+		</property>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter" class="${package}.security.filter.HttpSessionContextIntegrationForCacheFilter">
+		<property name="context">
+			<value>
+				${package}.security.jcaptcha.ImageCaptchaSecurityContextImpl
+			</value>
+		</property>
+		<property name="userCache">
+         	<ref bean="userCache" />
+         </property>
+         <property name="authorityResetUrl">
+			<value>/login.html?login.authority_reset=1</value>
+		</property>
+	</bean>
+
+	<bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
+		</property>
+	</bean>
+
+	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+         <property name="userDetailsService">
+         	<ref bean="userManager" />
+         </property>
+         <property name="userCache">
+         	<ref bean="userCache" />
+         </property>
+         <property name="passwordEncoder">
+         	<ref local="passwordEncoder" />
+         </property>
+	</bean>
+
+	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder"/>
+
+	<bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key" value="foobar" />
+	</bean>
+
+	<bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+		<property name="key" value="jptRocks" />
+	</bean>
+
+	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService">
+			<ref bean="userManager" />
+		</property>
+		<property name="authenticationDetailsSource">
+			<ref local="authenticationDetailsSourceHelper" />
+		</property>
+		<property name="key" value="jptRocks" />
+		<property name="parameter" value="rememberMe" />
+	</bean>
+
+	<bean id="authenticationDetailsSourceHelper" class="${package}.security.intercept.support.AuthenticationDetailsSourceHelper" />
+
+	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+		<constructor-arg value="/login.html" />
+		<constructor-arg>
+			<list>
+				<ref local="rememberMeServices" />
+				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="authenticationProcessingFilter" class="${package}.security.filter.UserAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/login.html?login.mismatch=1</value>
+		</property>
+		<property name="defaultTargetUrl">
+			<value>/index.html</value>
+		</property>
+		<property name="filterProcessesUrl">
+			<value>/j_acegi_security_check</value>
+		</property>
+		<property name="userManager">
+			<ref bean="userManager" />
+		</property>
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
+		</property>
+	</bean>
+
+	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>
+		<property name="authenticationEntryPoint">
+			<ref local="basicProcessingFilterEntryPoint" />
+		</property>
+	</bean>
+
+	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+		<property name="realmName" value="Jpt Realm" />
+	</bean>
+
+	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" />
+
+	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key" value="foobar" />
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+	</bean>
+
+	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+				<property name="loginFormUrl" value="/login.html?login.denial=1"/>
+				<property name="forceHttps" value="false"/>
+			</bean>
+		</property>
+		<property name="accessDeniedHandler">
+			<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl" />
+		</property>
+	</bean>
+
+	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref local="httpRequestAccessDecisionManager" />
+		</property>
+		<property name="objectDefinitionSource">
+			<ref local="filterDefinitionSource" />
+		</property>
+	</bean>
+	
+	<bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions" value="false" />
+		<property name="decisionVoters">
+			<list>
+				<ref local="roleVoter" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter">
+		<property name="rolePrefix">
+			<value>AUTH_</value>
+		</property>
+	</bean>
+
+	<bean id="filterDefinitionSource" class="${package}.security.intercept.web.DBFilterInvocationDefinitionSource">
+		<property name="authorizeSupport">
+			<ref bean="authorizeSupport" />
+		</property>
+	</bean>
+
+	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
+	<bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener" />
+	
+	<bean id="authorizeSupport" class="${package}.security.ext.CacheAuthorizeSupport">
+		<property name="cacheManager">
+			<ref bean="cacheManager" />
+		</property>
+		<property name="convertUrlToLowercaseBeforeComparison" value="true" />
+		<property name="useAntPath" value="true" />
+	</bean>
+
+</beans>

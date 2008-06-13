@@ -1,0 +1,89 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#assign i=101 />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#assign tcode=g.getTcode(model,i) />
+<#if tcode==i?c>
+<#assign i=i+1 />
+</#if>
+<#assign filename="/resources/sqlmaps/statement/T${tcode}${model?cap_first}.xml" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/resources/sqlmaps/statement/T${tcode}${model?cap_first}.xml" />
+</#if>
+<@pp.changeOutputFile name=filename />
+<#noparse>
+<#include "/dialect/${dialect?lower_case}.ftl" />
+</#noparse>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="${model?cap_first}">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="get${model?cap_first}s" resultMap="Declare.sT${tcode}Result">
+        SELECT <include refid="sT${tcode}Fields" />
+        FROM ${tname} t${tcode}
+    </select>
+
+    <select id="get${model?cap_first}" resultMap="Declare.sT${tcode}Result">
+        SELECT <include refid="sT${tcode}Fields" />
+        FROM ${tname} t${tcode}
+        WHERE t${tcode}.id=#id#
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="add${model?cap_first}">
+        INSERT INTO ${tname}(
+<#list t.column as c>
+<#assign cname=c.@name?lower_case />
+<#assign fname=g.getFname(cname) />
+<#if fname!="id">
+			${cname}<#if c_has_next>,</#if>
+</#if>
+</#list>
+        ) VALUES (
+<#list t.column as c>
+<#assign cname=c.@name?lower_case />
+<#assign fname=g.getFname(cname) />
+<#if fname!="id">
+        	#${fname}#<#if c_has_next>,</#if>
+</#if>
+</#list>
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${'$'}{getKey('${tname}')}</selectKey>
+    </insert>
+    
+    <update id="update${model?cap_first}">
+        UPDATE ${tname}
+		SET
+<#list t.column as c>
+<#assign cname=c.@name?lower_case />
+<#assign fname=g.getFname(cname) />
+<#if fname!="id">
+			${cname}=#${fname}#<#if c_has_next>,</#if>
+</#if>
+</#list>			
+        WHERE id=#id#
+    </update>
+    
+	<delete id="delete${model?cap_first}">
+        DELETE FROM ${tname}
+        WHERE ${'$'}{isChkIDs()}
+    </delete>
+
+</sqlMap>
+</#if>
+</#list>

@@ -1,0 +1,19 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#list ['update','create','destroy','delete'] as name>
+<#assign filename="/webapp/server/pages/${model}/${name}.json" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/webapp/server/pages/${model}/${name}.json" />
+</#if>
+<@pp.changeOutputFile name=filename />
+{
+	actionMessages: [JPT.ctx.lang['tip.${name}.success']],
+	id: 1
+}
+</#list>
+</#if>
+</#list>

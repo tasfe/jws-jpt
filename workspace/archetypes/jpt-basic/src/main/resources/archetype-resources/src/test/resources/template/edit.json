@@ -1,0 +1,24 @@
+﻿<#import "/lib/global.ftl" as g />
+<@pp.dropOutputFile />
+<#list doc.database.table as t>
+<#assign tname=t.@name?lower_case />
+<#assign model=g.getModel(tname) />
+<#if model?has_content>
+<#list ['edit','show'] as name>
+<#assign filename="/webapp/server/pages/${model}/${name}.json" />
+<#if pp.outputFileExists(filename)>
+<#assign filename="/tmp/webapp/server/pages/${model}/${name}.json" />
+</#if>
+<@pp.changeOutputFile name=filename />
+{
+	'${model}' : {
+<#list t.column as c>
+<#assign dbtype=c.@type?upper_case />
+<#assign fname=g.getFname(c.@name) />
+		'${fname}' : <#if typeValueMapping[dbtype]?has_content>${typeValueMapping[dbtype]}<#else>'${fname}'</#if><#if c_has_next>,</#if>
+</#list>	
+	}
+}
+</#list>
+</#if>
+</#list>

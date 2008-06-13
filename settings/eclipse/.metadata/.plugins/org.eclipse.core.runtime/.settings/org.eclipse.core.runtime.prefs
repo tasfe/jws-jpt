@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+content-types/org.eclipse.core.runtime.text/file-extensions=ftl,js,css,as,html,jsp
+content-types/org.eclipse.core.runtime.text/charset=UTF-8
+content-types/org.eclipse.jdt.core.javaProperties/charset=UTF-8

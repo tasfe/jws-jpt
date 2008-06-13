@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="setting" basedir="." default="install">
+	<property environment="env"/>	
+	
+	<path id="jws.path" location="${env.JWS_HOME}"/>
+	
+	<target name="install">
+		<pathconvert property="jws.home" refid="jws.path">
+			<filtermapper>
+				<replacestring from="\" to="\\" />
+				<replacestring from=":" to="\:" />
+			</filtermapper>
+		</pathconvert>
+		<echo>jws.home is ${jws.home}</echo>
+		<pathconvert property="jws.home.unix" refid="jws.path">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+				<replacestring from=":" to="\:" />
+			</filtermapper>
+		</pathconvert>
+		<echo>jws.home.unix is ${jws.home.unix}</echo>
+      	<copy todir="${env.JWS_HOME}/workspace/.metadata" overwrite="true">
+            <fileset dir="${env.JWS_HOME}/settings/eclipse/.metadata"/>
+            <filterset>
+                <filter token="JWS_HOME" value="${jws.home}" />
+				<filter token="JWS_HOME_UNIX" value="${jws.home.unix}" />				
+            </filterset>
+        </copy>
+    </target>
+
+</project>
