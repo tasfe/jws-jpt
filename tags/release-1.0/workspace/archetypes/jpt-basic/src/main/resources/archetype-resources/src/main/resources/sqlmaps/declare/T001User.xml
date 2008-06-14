@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT001Fields">
+		t001.id AS t001_id,
+		t001.name AS t001_name,
+		t001.password AS t001_password,
+		t001.fullname AS t001_fullname,
+		t001.mobile AS t001_mobile,
+		t001.email AS t001_email
+	</sql>
+	
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="sT001Result" class="user">
+		<result property="id" column="t001_id" />
+        <result property="name" column="t001_name" />
+        <result property="password" column="t001_password" />
+        <result property="fullname" column="t001_fullname" />
+        <result property="mobile" column="t001_mobile" />
+        <result property="email" column="t001_email" />
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="c1T001Result" extends="sT001Result" class="user">
+        <result property="roles" column="t001_id" select="getRolesByUser" />
+    </resultMap>
+    
+    <resultMap id="c2T001Result" extends="sT001Result" class="user" groupBy="id">
+        <result property="roles" resultMap="Declare.sT002Result" />
+    </resultMap>
+
+</sqlMap>

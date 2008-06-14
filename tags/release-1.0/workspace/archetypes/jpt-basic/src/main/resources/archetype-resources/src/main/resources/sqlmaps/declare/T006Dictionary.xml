@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT006Fields">
+		t006.id AS t006_id,
+		t006.code AS t006_code,
+		t006.name AS t006_name,
+		t006.assc_names AS t006_asscNames,
+		t006.text AS t006_text,
+		t006.descr AS t006_descr,
+		t006.value AS t006_value,
+		t006.parent_id AS t006_parentId,
+		t006.display_order AS t006_displayOrder
+	</sql>
+	
+	<sql id="sT006aFields">
+		t006a.id AS t006a_id,
+		t006a.assc_names AS t006a_asscNames,
+		t006a.text AS t006a_text,
+		t006a.descr AS t006a_descr,
+		t006a.value AS t006a_value,
+		t006a.parent_id AS t006a_parentId,
+		t006a.display_order AS t006a_displayOrder
+	</sql>
+
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+    <resultMap id="sT006Result" class="dictionary">
+    	<result property="id" column="t006_id" />
+    	<result property="code" column="t006_code" />
+    	<result property="name" column="t006_name" />
+    	<result property="asscNames" column="t006_asscNames" />
+    	<result property="text" column="t006_text" />
+		<result property="descr" column="t006_descr" />
+		<result property="value" column="t006_value" />
+		<result property="parentId" column="t006_parentId" />
+		<result property="displayOrder" column="t006_displayOrder" />				
+    </resultMap>
+    
+    <resultMap id="sT006aResult" class="dictionary">
+    	<result property="id" column="t006a_id" />
+    	<result property="asscNames" column="t006a_asscNames" />
+    	<result property="text" column="t006a_text" />
+		<result property="descr" column="t006a_descr" />
+		<result property="value" column="t006a_value" />
+		<result property="parentId" column="t006a_parentId" />
+		<result property="displayOrder" column="t006a_displayOrder" />		
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="c2T006Result" extends="sT006Result" class="dictionary" groupBy="id">
+        <result property="subdicts" resultMap="Declare.sT006aResult" />
+    </resultMap>
+
+</sqlMap>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="jpt">
+	<requiredProperties>
+		<requiredProperty key="groupId">
+			<defaultValue>jpt</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="artifactId">
+			<defaultValue>mytest</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="version">
+			<defaultValue>1.0-SNAPSHOT</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="package">
+			<defaultValue>jpt</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="databaseType">
+			<defaultValue>mysql</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="databaseSchema">
+			<defaultValue>mytest</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="databaseUsername">
+			<defaultValue>mytest</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="databasePassword">
+			<defaultValue>mytest</defaultValue>
+		</requiredProperty>
+	</requiredProperties>
+
+  <fileSets>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+	<fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <excludes>
+        <exclude>**/*.xml</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/resources</directory>
+      <excludes>
+		<exclude>ApplicationResources*.properties</exclude>
+        <exclude>**/*-validation.xml</exclude>
+		<exclude>sqlmaps/**</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet packaged="true" encoding="UTF-8">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*-validation.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>src/main/resources</directory>
+      <includes>
+		<include>ApplicationResources*.properties</include>
+        <include>sqlmaps/**</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/test/resources</directory>
+      <includes>
+        <include>**/*.java</include>
+		<include>**/model-validation.xml</include>
+		<include>**/sql-map-config.xml</include>
+      </includes>
+    </fileSet>
+	<fileSet encoding="UTF-8">
+      <directory>src/test/resources</directory>
+      <excludes>        
+        <exclude>**/*.java</exclude>
+		<exclude>**/model-validation.xml</exclude>
+		<exclude>**/sql-map-config.xml</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/site</directory>
+      <includes>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>docs</directory>
+      <excludes>        
+        <exclude>**/*.txt</exclude>
+		<exclude>**/*.sql</exclude>
+		<exclude>**/*.dsn</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>docs</directory>
+      <includes>		
+        <include>**/*.txt</include>
+		<include>**/*.sql</include>
+        <include>**/*.dsn</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>bin</directory>
+      <includes>
+        <include>**/*.bat</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</archetype-descriptor>

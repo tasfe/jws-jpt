@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<bean type="com.opensymphony.xwork2.ObjectFactory" name="jpt4spring" class="${package}.webapp.StrutsSpringObjectFactory" />
+	
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.action.extension" value="action"/>
+    <constant name="struts.objectFactory" value="jpt4spring"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources"/>
+    <constant name="struts.multipart.maxSize" value="5242880"/>
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+
+    <package name="default" extends="json-default">
+        <interceptors>
+        	<interceptor name="loginUserInterceptor" class="loginUserInterceptor"/>
+        	<interceptor name="basicModelInterceptor" class="basicModelInterceptor"/>
+        	<interceptor name="conversionErrorInterceptor" class="conversionErrorInterceptor"/>
+        	<interceptor-stack name="basicModelStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="basicModelInterceptor"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params" />
+                <interceptor-ref name="conversionErrorInterceptor"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit</param>
+                </interceptor-ref>
+            </interceptor-stack>
+            <interceptor-stack name="defaultModelStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params" />
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="loginUserInterceptor"/>
+            </interceptor-stack>
+            <interceptor-stack name="uploadStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params" />
+                <interceptor-ref name="conversionError"/>
+            </interceptor-stack>
+            <interceptor-stack name="simpleStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params" />
+                <interceptor-ref name="conversionError"/>
+            </interceptor-stack>
+        	<interceptor-stack name="batchStack">
+	            <interceptor-ref name="exception"/>
+	            <interceptor-ref name="servletConfig"/>
+	            <interceptor-ref name="prepare"/>
+	            <interceptor-ref name="static-params"/>
+	            <interceptor-ref name="params"/>
+	            <interceptor-ref name="conversionError"/>
+	        	<interceptor-ref name="json"/>
+            </interceptor-stack>
+        </interceptors>
+      
+		<global-results>
+            <result name="input" type="freemarker">/server/freemarker/error.ftl</result>
+        	<result name="messages" type="freemarker">/server/freemarker/message.ftl</result>
+        </global-results>
+
+        <action name="basic/json/*/*" class="{2}JptAction">
+        	<interceptor-ref name="basicModelStack"/>
+        	<result name="success" type="json">
+        		<param name="root">root</param>
+        	</result>
+        </action>
+ 
+        <action name="basic/html/*/*" class="{2}JptAction">
+        	<interceptor-ref name="basicModelStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/{2}/{1}.ftl</result>
+        </action>
+
+        <action name="batch/json/*" class="{1}JptAction">
+			<interceptor-ref name="batchStack"/>
+        	<result name="success" type="json">
+        		<param name="root">root</param>
+        	</result>
+        </action>
+
+        <action name="batch/html/*" class="{1}JptAction">
+			<interceptor-ref name="batchStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        </action>
+           
+        <action name="default/json/*" method="list" class="{1}JptAction">
+        	<interceptor-ref name="defaultModelStack"/>
+        	<result name="success" type="json">
+        		<param name="root">root</param>
+        	</result>
+        	<param name="name">{1}</param>
+        </action>
+        
+        <action name="default/html/*" class="{1}JptAction">
+        	<interceptor-ref name="defaultModelStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        	<param name="name">{1}</param>
+        </action>
+
+        <action name="simple/js/*/*" class="{2}JptAction">
+        	<interceptor-ref name="simpleStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        </action>
+        
+        <action name="upload/*" class="{1}JptAction">
+        	<interceptor-ref name="uploadStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/upload.ftl</result>
+        </action>
+        
+        <action name="default/html/*" class="{1}JptAction">
+        	<interceptor-ref name="uploadStack"/>
+        	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        </action>
+
+    </package>
+</struts>

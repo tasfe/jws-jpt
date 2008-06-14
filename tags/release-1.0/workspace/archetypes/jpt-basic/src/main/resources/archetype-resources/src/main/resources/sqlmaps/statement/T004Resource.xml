@@ -1,0 +1,68 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Resource">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getResources" resultMap="Declare.sT004Result">
+        SELECT <include refid="sT004Fields" />
+        FROM t_resources t004
+    </select>
+    
+    <select id="getAllresc" resultMap="Declare.sT004Result">
+        SELECT <include refid="sT004Fields" />
+        FROM t_resources t004
+    </select>
+    
+    <select id="getPermisByResource" resultClass="java.lang.String">
+        SELECT t003.authority
+        FROM t_permissions t003,t_permis_res t
+        WHERE t003.id=t.permis_id AND t.res_id=#id#
+    </select>
+
+    <select id="getResource" resultMap="Declare.sT004Result">
+        SELECT <include refid="sT004Fields" />
+        FROM t_resources t004
+        WHERE t004.id=#id#
+    </select>
+    
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addResource">
+        INSERT INTO t_resources(
+			name,
+			url,
+			descr
+        ) VALUES (
+        	#name#,
+        	#url#,
+        	#descr#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_resources')}</selectKey>
+    </insert>
+    
+    <update id="updateResource">
+        UPDATE t_resources
+		SET
+			name=#name#,
+			url=#url#,
+			descr=#descr#
+        WHERE id=#id#
+    </update>
+    
+	<delete id="deleteResource">
+        DELETE FROM t_resources
+        WHERE ${isChkIDs()}
+    </delete>
+
+</sqlMap>

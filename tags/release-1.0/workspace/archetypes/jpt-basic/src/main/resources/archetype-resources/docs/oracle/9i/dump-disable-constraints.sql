@@ -1,0 +1,13 @@
+﻿ALTER TABLE t_dictionary DISABLE CONSTRAINT fk_dictionary_parent;
+ALTER TABLE t_menus DISABLE CONSTRAINT fk_menus_parent;
+ALTER TABLE t_menu_permis DISABLE CONSTRAINT fk_mp_m;
+ALTER TABLE t_menu_permis DISABLE CONSTRAINT fk_mp_p;
+ALTER TABLE t_permis_res DISABLE CONSTRAINT fk_prs_p;
+ALTER TABLE t_permis_res DISABLE CONSTRAINT fk_prs_rs;
+ALTER TABLE t_role_permis DISABLE CONSTRAINT fk_rp_p;
+ALTER TABLE t_role_permis DISABLE CONSTRAINT fk_rp_r;
+ALTER TABLE t_user_permis DISABLE CONSTRAINT fk_up_p;
+ALTER TABLE t_user_permis DISABLE CONSTRAINT fk_up_u;
+ALTER TABLE t_user_role DISABLE CONSTRAINT fk_ur_r;
+ALTER TABLE t_user_role DISABLE CONSTRAINT fk_ur_u;
+COMMIT;

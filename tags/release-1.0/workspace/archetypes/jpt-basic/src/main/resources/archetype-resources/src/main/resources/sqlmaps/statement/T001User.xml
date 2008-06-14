@@ -1,0 +1,144 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+
+    <!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getUserByName" resultMap="Declare.c1T001Result">
+        SELECT <include refid="sT001Fields" />
+        FROM t_users t001
+        WHERE t001.name=#name#
+    </select>
+
+    <select id="getRolesByUser" resultMap="Declare.sT002Result">
+        SELECT <include refid="sT002Fields" />
+        FROM t_user_role t,t_roles t002
+        WHERE t.user_id=#id# AND t002.id=t.role_id
+    </select>
+
+    <select id="getPermisByUser" resultClass="java.lang.String">
+        SELECT t003.authority
+        FROM t_permissions t003,t_user_role t1,t_role_permis t2
+        WHERE t003.id=t2.permis_id AND t1.user_id=#id# AND t1.role_id=t2.role_id
+        UNION
+        SELECT t003.authority
+        FROM t_permissions t003,t_user_permis t3
+        WHERE t003.id=t3.permis_id AND t3.user_id=#id#
+    </select>
+    
+	<select id="getUsers" resultMap="Declare.c2T001Result">
+        SELECT <include refid="sT001Fields" />,<include refid="sT002Fields" />
+        FROM t_users t001,t_roles t002,t_user_role t
+        WHERE
+			${isNotPredefined('t001')} AND
+			t001.id&lt;&gt;#filters.loginUser.id# AND
+			t001.id=t.user_id AND
+			t002.id=t.role_id
+        <dynamic prepend="ORDER BY">
+        	<isNotEmpty property="sorters">t001.id</isNotEmpty>
+		</dynamic>
+    </select>
+    
+    <select id="getUser" resultMap="Declare.c1T001Result">
+        SELECT <include refid="sT001Fields" />
+        FROM t_users t001
+        WHERE t001.id=#id#
+    </select>
+    
+	<select id="getSimpleUserByName" resultMap="Declare.sT001Result">		
+        SELECT <include refid="sT001Fields" />
+        FROM t_users t001
+        WHERE t001.name=#name#
+    </select>
+    
+    <select id="getSimpleUsersByID" resultMap="Declare.sT001Result">		
+        SELECT <include refid="sT001Fields" />
+        FROM t_users t001
+        WHERE ${isChkIDs('t001')}
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+    <insert id="addUser">
+        INSERT INTO t_users(
+        	name,
+        	password,
+        	fullname,
+        	enabled,
+        	mobile,
+        	email
+        ) VALUES (
+        	#name#,
+        	#password#,
+        	#fullname#,
+        	#enabled#,
+        	#mobile#,
+        	#email#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_users')}</selectKey>
+    </insert>
+
+	<sql id="addRoles">
+        INSERT INTO t_user_role(
+        	user_id,
+        	role_id
+        )
+        SELECT
+        	#p0.id#,
+        	id
+        FROM t_roles
+        WHERE
+        	<isEmpty property="p0.roleids">
+        	id=${NaN}
+        	</isEmpty>
+        	<isNotEmpty property="p0.roleids">
+        	id IN(<iterate property="p0.roleids" conjunction=",">#p0.roleids[]#</iterate>)
+        	</isNotEmpty>
+	</sql>
+	
+    <insert id="addUser.1.i">
+	<include refid="addRoles" />
+    </insert>
+ 
+    <update id="updateUser">
+        UPDATE t_users
+		SET
+			name=#name#,
+			password=#password#,
+			fullname=#fullname#,
+			mobile=#mobile#,
+			email=#email#
+        WHERE id=#id# AND ${isNotPredefined()}
+    </update>
+
+	<delete id="updateUser.1.u">
+        DELETE FROM t_user_role
+        WHERE user_id=(SELECT id FROM t_users WHERE id=#p0.id# AND ${isNotPredefined()})
+    </delete>
+    
+    <insert id="updateUser.2.u">
+	<include refid="addRoles" />
+    </insert>
+    
+    <update id="updatePassword">
+        UPDATE t_users
+		SET password=#password#
+        WHERE id=#loginUser.id#
+    </update>
+    
+	<delete id="deleteUser">
+        DELETE FROM t_users
+        WHERE ${isChkIDs()} AND ${isNotPredefined()}
+    </delete>
+
+</sqlMap>

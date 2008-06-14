@@ -1,0 +1,94 @@
+<#include "/dialect/${dialect?lower_case}.ftl" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Dictionary">
+
+	<!--
+	*************************************************************************************************************
+	*	SELECT
+	*************************************************************************************************************
+	-->
+	
+	<select id="getDictionarys" resultMap="Declare.c2T006Result">
+        SELECT <include refid="sT006Fields" />,<include refid="sT006aFields" />
+        FROM t_dictionary t006 LEFT JOIN t_dictionary t006a ON t006.id=t006a.parent_id
+        WHERE t006.parent_id IS NULL
+        <dynamic prepend="ORDER BY">
+        	<isNotNull property="sorters">t006_displayOrder,t006a_displayOrder</isNotNull>
+		</dynamic>
+    </select>
+    
+    <select id="getAlldict" resultMap="Declare.c2T006Result">
+        SELECT <include refid="sT006Fields" />,<include refid="sT006aFields" />
+        FROM t_dictionary t006 LEFT JOIN t_dictionary t006a ON t006.id=t006a.parent_id
+        WHERE t006.parent_id IS NULL OR t006a.id IS NOT NULL
+        ORDER BY t006.id,t006a.value
+    </select>
+    
+    <select id="getDictionary" resultMap="Declare.sT006Result">
+        SELECT <include refid="sT006Fields" />
+        FROM t_dictionary t006
+        WHERE t006.id=#id#
+    </select>
+
+    <!--
+	*************************************************************************************************************
+	*	INSERT & UPDATE & DELETE
+	*************************************************************************************************************
+	-->
+	
+	<insert id="addDictionary">
+        INSERT INTO t_dictionary(
+			name,
+			assc_names,
+        	text,
+        	descr,
+			parent_id,
+			display_order
+        ) VALUES (
+			#name#,
+			#asscNames#,
+        	#text#,
+        	#descr#,
+			#parentId#,
+			#displayOrder#
+        )
+        <selectKey resultClass="java.lang.Long" keyProperty="id" >${getKey('t_dictionary')}</selectKey>
+    </insert>
+    
+    <select id="addDictionary.1.s" resultMap="Declare.sT006Result">
+        SELECT <include refid="sT006Fields" />
+        FROM t_dictionary t006
+        WHERE t006.id=#p0.parentId#
+    </select>
+    
+    <update id="addDictionary.2.u">
+        UPDATE t_dictionary
+		SET
+			<isEmpty property="p1">
+			code='/$p0.id$'
+			</isEmpty>
+			<isNotEmpty property="p1">
+			code='$p1.code$/$p0.id$'
+			</isNotEmpty>
+        WHERE id=#p0.id#
+    </update>
+       
+    <update id="updateDictionary">
+        UPDATE t_dictionary
+		SET
+			name=#name#,
+			assc_names=#asscNames#,
+			text=#text#,
+			descr=#descr#,
+			display_order=#displayOrder#
+        WHERE id=#id#
+    </update>
+
+	<delete id="deleteDictionary">
+        DELETE FROM t_dictionary
+        WHERE ${isChkIDs()} AND ${isNotPredefined()}
+    </delete>
+
+</sqlMap>

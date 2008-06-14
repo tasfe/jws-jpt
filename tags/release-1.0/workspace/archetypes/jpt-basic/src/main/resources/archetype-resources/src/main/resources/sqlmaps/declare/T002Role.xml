@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Declare">
+
+	<!--
+	*************************************************************************************************************
+	*	Fields
+	*************************************************************************************************************
+	-->
+
+	<sql id="sT002Fields">
+		t002.id AS t002_id,
+		t002.name AS t002_name,
+		t002.descr AS t002_descr
+	</sql>
+
+	<!--
+	*************************************************************************************************************
+	*	Simple Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="sT002Result" class="role">
+		<result property="id" column="t002_id" />
+		<result property="name" column="t002_name" />
+		<result property="descr" column="t002_descr" />
+    </resultMap>
+
+	<!--
+	*************************************************************************************************************
+	*	Complex Results
+	*************************************************************************************************************
+	-->
+
+	<resultMap id="c1T002Result" extends="sT002Result" class="role">
+        <result property="permissions" column="t002_id" select="getPermisByRole" />
+    </resultMap>
+    
+</sqlMap>
