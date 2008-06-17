@@ -40,3 +40,5 @@
 　　svn: REPORT of '/work/!svn/vcc/default': Could not read response body:
 
 　　改成https连接方式就可以避免了。^_^
+
+== 我下载源代码后，在执行第6步时，出现Searching repository for plugin with prefix:'archetype'问题，是什么原因？ ==
