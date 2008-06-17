@@ -29,3 +29,10 @@
  * 程序员开始实现功能（*注意：此时的代码都是纯逻辑的，程序员可以不熟悉html、css、javascript等客户端技术，而且熟悉sql的可以专门负责sql实现*），测试组开始做测试用例，客服组开始编写用户手册，系统分析员、页面设计者和美工开始参与其他项目；
 
  * 核心功能实现后，提交用户确认，进一步迭代需求。
+
+== subversion下载报错怎么办？ ==
+  如果使用者在WindowsXP操作系统下，在用eclipse插件或者TortoiseSVN客户端下载源代码时，可能会出现如下错误：
+    RA layer request failed
+    svn: REPORT request failed on '/work/!svn/vcc/default'
+    svn: REPORT of '/work/!svn/vcc/default': Could not read response body:
+  改成https连接方式就可以避免了，^_^
