@@ -44,5 +44,9 @@
 == 我下载源代码后，在执行第6步时，出现Searching repository for plugin with prefix:'archetype'问题，是什么原因？ ==
 　　由于源码中没有包含依赖的jar库，需要从远程仓库下载，此时如果防火墙阻止了_<JWS_HOME>_/tools/jdk/bin/java.exe，就会报此错误。如果是windows操作系统，请打开“控制面板-->Windows防火墙”，选择“例外”标签，点击“添加程序”，把<JWS-HOME>\tools\jdk\bin\java.exe选中即可。
 
+== 我自己有开发工具，我希望用自己的myeclipse、jdk、ant、m2，只用该开发框架可以吗，如何实现？ ==
+  m2引用的包原则上是不需要包含在项目中，只在项目依赖中指明即可，用到哪些会下载哪些，提供repository目录是一个项目启动后，依赖基本确定，把常用的放在一起省得下载，打包程序是只按pom文件中需要的打包。更进一步的做法，是在公司建个私服，把常用库都放在私服上。jdk，m2这些工具在<JWS_HOME>/bin/setvar.bat中指定路径即可。
+
 == 为什么执行自己生成的sql脚本产生的数据库记录是乱码？ ==
-== 我在eclipse中导入工程，应该如何修改成自己的哪？有什么convention或者是tolltip吗？ ==
+
+== 我在eclipse中导入工程，应该如何修改成自己的哪？有什么convention或者是tip吗？ ==
