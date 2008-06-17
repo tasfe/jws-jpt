@@ -52,11 +52,11 @@
 
 == 为什么执行自己生成的sql脚本产生的数据库记录是乱码？ ==
 　　项目带的sql文件是UTF-8格式，mysql客户端编码格式需要是UTF-8才能正确执行。可以在my.ini中设置客户端编码如下：
-
+{{{
 [mysql]
 
 default-character-set=utf8
-
+}}}
 或者在mysql命令行指定。Navicat for MySQL对UTF-8支持很好，推荐使用。当然也可以用记事本把sql文件另存为ANSI格式。
 
 == 我在eclipse中导入工程，应该如何修改成自己的哪？有什么convention或者是tip吗？ ==
