@@ -6,7 +6,6 @@ http://docs.jquery.com/Main_Page
 1.2、jst
 http://code.google.com/p/trimpath/wiki/JavaScriptTemplates
 1.3、REST
-http://brainstorm.javaeye.com/blog/post/416397
 http://www.javaeye.com/topic/70113
 
 2、页面命名规范：
