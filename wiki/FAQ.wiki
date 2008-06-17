@@ -32,7 +32,7 @@
 
 == subversion下载报错怎么办？ ==
   如果使用者在WindowsXP操作系统下，在用eclipse插件或者TortoiseSVN客户端下载源代码时，可能会出现如下错误：
-    RA layer request failed
-    svn: REPORT request failed on '/work/!svn/vcc/default'
-    svn: REPORT of '/work/!svn/vcc/default': Could not read response body:
+  RA layer request failed
+  svn: REPORT request failed on '/work/!svn/vcc/default'
+  svn: REPORT of '/work/!svn/vcc/default': Could not read response body:
   改成https连接方式就可以避免了，^_^
