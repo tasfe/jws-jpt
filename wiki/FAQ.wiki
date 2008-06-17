@@ -42,14 +42,21 @@
 　　改成https连接方式就可以避免了。^_^
 
 == 我下载源代码后，在执行第6步时，出现Searching repository for plugin with prefix:'archetype'问题，是什么原因？ ==
-　　由于源码中没有包含依赖的jar库，需要从远程仓库下载，此时如果防火墙阻止了_<JWS_HOME>_/tools/jdk/bin/java.exe，就会报此错误。如果是windows操作系统，请打开“控制面板-->Windows防火墙”，选择“例外”标签，点击“添加程序”，把<JWS-HOME>\tools\jdk\bin\java.exe选中即可。
+　　由于源码中没有包含依赖的jar库，需要从远程仓库下载，此时如果防火墙阻止了_<JWS_HOME>_/tools/jdk/bin/java.exe，就会报此错误。如果使用的是Windows自带的防火墙，可以打开“控制面板-->Windows防火墙”，选择“例外”标签，点击“添加程序”，把<JWS-HOME>/tools/jdk/bin/java.exe选中即可。如果是第三方产品，可以在其相应的防火墙配置中对<JWS-HOME>/tools/jdk/bin/java.exe放行即可。
 
 == 我自己有开发工具，我希望用自己的myeclipse、jdk、ant、m2，只用该开发框架可以吗，如何实现？ ==
 　　eclipse、jdk、ant、m2这些工具是在<JWS_HOME>/bin/setvars.bat中指定的路径，相应的生成的项目下也有bin/setvars.bat,也要做相应的修改。不过用此框架不建议使用myeclipse，因为本框架中只有编辑java代码会用eclipse来检查语法错误，进行重构，调试以及查看jetty控制台输出等，其他功能根本用不上，甚至JDT都显得有点大。装了myeclipse没有几斤内存是跑不起来的。所以除了jdk可以考虑用本地的（也不推荐），其他都推荐用jws的。我比较喜欢下面的组合：
- * 编辑、调试java用JDT；
+ * 编辑、调试java用JDT，主要用其重构功能；
  * 编辑html,css用Dreamweaver；
  * 编辑js文件、sqlmap映射文件用notepad++。
 
 == 为什么执行自己生成的sql脚本产生的数据库记录是乱码？ ==
+　　项目带的sql文件是UTF-8格式，mysql客户端编码格式需要是UTF-8才能正确执行。可以在my.ini中设置客户端编码如下：
+
+[mysql]
+
+default-character-set=utf8
+
+或者在mysql命令行指定。Navicat for MySQL对UTF-8支持很好，推荐使用。当然也可以用记事本把sql文件另存为ANSI格式。
 
 == 我在eclipse中导入工程，应该如何修改成自己的哪？有什么convention或者是tip吗？ ==
