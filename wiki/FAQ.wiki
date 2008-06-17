@@ -44,4 +44,4 @@
 == 我下载源代码后，在执行第6步时，出现Searching repository for plugin with prefix:'archetype'问题，是什么原因？ ==
 　　由于源码中没有包含依赖的jar库，需要从远程仓库下载，此时如果防火墙阻止了_<JWS_HOME>_/tools/jdk/bin/java.exe，就会报此错误。
 
-== 我自己有开发工具，我希望用自己的eclipse、jdk、ant、m2，只用该开发框架可以吗，如何实现？ ==
+== 我自己有开发工具，我希望用自己的myeclipse、jdk、ant、m2，只用该开发框架可以吗，如何实现？ ==
