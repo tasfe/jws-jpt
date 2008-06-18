@@ -62,3 +62,10 @@ default-character-set=utf8
 
 == 如何将生成的项目导入eclipse ==
 　　首先要执行<项目目录>/bin/create-eclipse-project.bat创建eclipse项目文件，然后执行<JWS_HOME>/bin/install.bat设置工作区，这时会在<JWS_HOME>/workspace下生成.metadata文件夹，最后执行<JWS_HOME>/bin/eclipse.bat启动eclipse，选择"File">"Import..."将项目导入eclipse。
+
+== jpt如何把一个url对应到一条sql？ ==
+ * 客户端javascript对url做统一处理，转换成符合规范的服务端url，并传递必要(method)参数；
+ * urlrewrite过滤此url，提取操作参数，转换成类似_<操作类型>_/_<结果类型>_/_<模型>_/_<操作>_的请求转给struts2的action处理；
+ * action根据_<操作>_确定要执行的方法，根据_<模型>_确定将请求数据封装成什么对象传给service，根据_<操作类型>_确定传给service什么样的附加参数，根据_<结果类型>_确定result的类型（json或html）；
+ * service根据_<模型>_和方法本身确定sql的名字；
+ * iBATIS根据名字匹配sql。
