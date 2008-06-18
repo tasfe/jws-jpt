@@ -63,6 +63,9 @@ default-character-set=utf8
 == 如何将生成的项目导入eclipse ==
 　　首先要执行<项目目录>/bin/create-eclipse-project.bat创建eclipse项目文件，然后执行<JWS_HOME>/bin/install.bat设置工作区，这时会在<JWS_HOME>/workspace下生成.metadata文件夹，最后执行<JWS_HOME>/bin/eclipse.bat启动eclipse，选择"File">"Import..."将项目导入eclipse。
 
+== jpt如何封装多种数据库间的差异 ==
+　　简单说是用freemarker在编译期间对iBATIS的sqlmap文件进行了预处理，根据pom文件中设置的数据库类型有选择的组合差异性sql。例如“字符串连接”操作，在mysql是concat函数，oracle是||，而sqlserver是+，那么就可以分别在mysql.ftl,oracle.ftl和sqlserver.ftl中用freemarker语法定义concat函数，函数的实现就是针对具体数据的特殊操作。而在sqlmap中进行字符串连接的地方用freemarker语法调用concat函数。编译是自定义的maven插件会根据pom文件中设置的数据库类型来决定包含那个ftl文件。
+
 == jpt如何把一个url对应到一条sql？ ==
  * 客户端javascript对url做统一处理，转换成符合规范的服务端url，并传递必要(method)参数；
 
