@@ -58,7 +58,7 @@
 
 default-character-set=utf8
 }}}
-　　或者在启动mysql命令时指定。*注意不要直接把sql文件内容拷贝到命令行执行，而要使用加载文件的方式。例如：mysql -uroot -p mytest<02-init-basic.sql。*Navicat for MySQL对UTF-8支持很好，推荐使用。当然也可以用记事本把sql文件另存为ANSI格式。
+　　或者在启动mysql命令时指定。*注意不要直接把sql文件内容拷贝到命令行执行，而要使用加载文件的方式。例如：mysql -uroot -p mytest<02-init-basic.sql，sql文件可以用相对路径或绝对路径，只要保证能在指定的路径找到文件即可。*Navicat for MySQL对UTF-8支持很好，推荐使用。当然也可以用记事本把sql文件另存为ANSI格式。
 
 == 如何将生成的项目导入eclipse ==
 　　首先要执行<项目目录>/bin/create-eclipse-project.bat创建eclipse项目文件，然后执行<JWS_HOME>/bin/install.bat设置工作区，这时会在<JWS_HOME>/workspace下生成.metadata文件夹，最后执行<JWS_HOME>/bin/eclipse.bat启动eclipse，选择"File">"Import..."将项目导入eclipse。
