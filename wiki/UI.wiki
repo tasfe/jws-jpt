@@ -3,6 +3,7 @@
 ----
 
 == Javascript ==
+
 === boolean prepare (Object data) ===
 
 === void beforeParseJST (Object data) ===
@@ -13,4 +14,4 @@
 
 === boolean before_<XXX>_ () ===
 
-=== boolean after_<XXX>_ (Object args...) ===
+=== boolean after_<XXX>_ (Object result) ===
