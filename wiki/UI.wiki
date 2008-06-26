@@ -2,7 +2,8 @@
 = JWS-JPT User Interface =
 ----
 
-== Javascript User Interface ==
+== Javascript UI ==
+　　如果html文件中引入了_<项目目录>_/src/main/webapp/scripts/global.js（依赖_<项目目录>_/src/main/webapp/scripts/jquery.js和_<项目目录>_/src/main/webapp/scripts/toolkit.js），则会按默认的控制流程调用下列Javascript接口方法实现。
 
 === boolean prepare (Object data) ===
 
@@ -15,3 +16,9 @@
 === boolean before_<XXX>_ () ===
 
 === boolean after_<XXX>_ (Object result) ===
+
+== Java UI ==
+
+== Sqlmap UI ==
+
+== Config UI ==
