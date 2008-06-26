@@ -2,7 +2,7 @@
 = JWS-JPT User Interface =
 ----
 
-== Javascript ==
+== Javascript User Interface ==
 
 === boolean prepare (Object data) ===
 
