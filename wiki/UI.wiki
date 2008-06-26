@@ -1,0 +1,16 @@
+#labels Featured,Phase-Implementation
+= JWS-JPT User Interface =
+----
+
+== Javascript ==
+=== boolean prepare (Object data) ===
+
+=== void beforeParseJST (Object data) ===
+
+=== void afterParseJST (Object data) ===
+
+=== void initialize (Object data) ===
+
+=== boolean before_<XXX>_ () ===
+
+=== boolean after_<XXX>_ (Object args...) ===
