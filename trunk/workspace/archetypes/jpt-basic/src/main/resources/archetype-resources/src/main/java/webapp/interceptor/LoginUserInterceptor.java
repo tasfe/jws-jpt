@@ -1,18 +1,21 @@
 package ${package}.webapp.interceptor;
 
-import ${package}.Constants;
-
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import ${package}.Constants;
 
 public class LoginUserInterceptor extends AbstractInterceptor {
 
 	private static final long serialVersionUID = 1911229921895128173L;
 
-	/* (non-Javadoc)
-	 * @see com.opensymphony.xwork2.interceptor.AbstractInterceptor#intercept(com.opensymphony.xwork2.ActionInvocation)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.opensymphony.xwork2.interceptor.AbstractInterceptor#intercept(com
+	 * .opensymphony.xwork2.ActionInvocation)
 	 */
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {

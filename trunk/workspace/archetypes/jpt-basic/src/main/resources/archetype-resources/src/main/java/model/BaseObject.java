@@ -12,6 +12,8 @@ import ${package}.Constants;
 
 public abstract class BaseObject implements Serializable {
 
+	private static final long serialVersionUID = 6429163667604344087L;
+
 	protected Map ctx = new HashMap();
 
 	protected Long id;
@@ -48,6 +50,11 @@ public abstract class BaseObject implements Serializable {
 	@JSON(serialize = false)
 	public Object getLoginUser() {
 		return ctx.get(Constants.LOGIN_USER);
+	}
+
+	@JSON(serialize = false)
+	public Object getP0() {
+		return this;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package ${package}.webapp.action;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +37,10 @@ public class BaseAction<T extends Manager> extends ActionSupport {
 		return root;
 	}
 
+	public Date getNow() {
+		return new Date();
+	}
+
 	public Map getParams() {
 		return params;
 	}
@@ -45,7 +50,7 @@ public class BaseAction<T extends Manager> extends ActionSupport {
 	}
 
 	/**
-	 * 鏃犲疄闄呮剰涔夛紝涓轰簡涓巃jax璇锋眰涓殑鍙傛暟鍖归厤锛屾秷闄OG淇℃伅銆?
+	 * 无实际意义，为了与ajax请求中的参数匹配，消除LOG信息。
 	 * 
 	 * @return
 	 */

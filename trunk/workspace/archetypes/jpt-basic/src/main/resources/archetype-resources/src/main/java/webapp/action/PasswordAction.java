@@ -27,7 +27,6 @@ public class PasswordAction<T extends UserManager> extends BasicAction<T> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void prepareModel() {
 		Password password = ((Password) model);

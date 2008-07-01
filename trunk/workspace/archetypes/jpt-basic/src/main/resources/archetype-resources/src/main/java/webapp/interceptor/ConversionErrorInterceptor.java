@@ -50,7 +50,8 @@ public class ConversionErrorInterceptor extends AbstractInterceptor {
 				Object action = invocation.getAction();
 				if (action instanceof ValidationAware) {
 					ValidationAware va = (ValidationAware) action;
-					va.addFieldError(propertyName, getErrorMessage(propertyName, stack));
+					va.addFieldError(propertyName, getErrorMessage(
+							propertyName, stack));
 				}
 
 				if (fakie == null) {

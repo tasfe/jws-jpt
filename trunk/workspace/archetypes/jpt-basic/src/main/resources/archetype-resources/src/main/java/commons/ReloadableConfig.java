@@ -3,9 +3,9 @@ package ${package}.commons;
 import java.io.File;
 import java.util.Properties;
 
-import ${package}.util.PropertiesUtil;
-
 import org.springframework.util.ResourceUtils;
+
+import ${package}.util.PropertiesUtil;
 
 public class ReloadableConfig extends Config {
 

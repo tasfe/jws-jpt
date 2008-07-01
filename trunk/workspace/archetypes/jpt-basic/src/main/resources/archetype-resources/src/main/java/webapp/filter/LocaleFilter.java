@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 
-import ${package}.Constants;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import ${package}.Constants;
+
 public class LocaleFilter extends OncePerRequestFilter {
 
-	@SuppressWarnings("unchecked")
 	public void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {

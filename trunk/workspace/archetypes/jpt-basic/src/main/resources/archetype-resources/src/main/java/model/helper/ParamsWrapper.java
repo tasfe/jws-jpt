@@ -95,4 +95,8 @@ public class ParamsWrapper {
 		return offset != null || limit != null;
 	}
 
+	public Object getP0() {
+		return filters;
+	}
+
 }

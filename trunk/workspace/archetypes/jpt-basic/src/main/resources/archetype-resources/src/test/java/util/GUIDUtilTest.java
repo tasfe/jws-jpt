@@ -1,7 +1,6 @@
 package ${package}.util;
 
-import static org.junit.Assert.*;
-import ${package}.util.GUIDUtil;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

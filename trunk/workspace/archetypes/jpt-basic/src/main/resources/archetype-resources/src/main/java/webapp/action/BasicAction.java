@@ -41,7 +41,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * @return 分页对象�?
+	 * @return ��ҳ����
 	 */
 	public Pager getPager() {
 		return pager;
@@ -52,7 +52,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * @return 所操作模型的名称。例如user、userByName等�?
+	 * @return ������ģ�͵����ơ�����user��userByName�ȡ�
 	 */
 	public String getName() {
 		return name;
@@ -63,7 +63,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * @return 客户端引用模型对象所用的名称�?
+	 * @return �ͻ�������ģ�Ͷ������õ����ơ�
 	 */
 	public String getModelName() {
 		return modelName;
@@ -98,7 +98,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 列出当前页所有符合条件的模型对象�?
+	 * �г���ǰҳ���з���������ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -138,7 +138,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 列出所有符合条件的模型对象�?
+	 * �г����з���������ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -162,7 +162,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 显示/查看指定ID的模型对象�?
+	 * ��ʾ/�鿴ָ��ID��ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -184,7 +184,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 初始化要修改的指定ID的模型对象�?
+	 * ��ʼ��Ҫ�޸ĵ�ָ��ID��ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -206,7 +206,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 初始化一个新模型对象�?
+	 * ��ʼ��һ����ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -228,7 +228,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 保存新创建的模型对象�?
+	 * �����´�����ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -256,7 +256,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 保存已修改的模型对象�?
+	 * �������޸ĵ�ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -284,7 +284,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 删除指定ID的模型对象�?
+	 * ɾ��ָ��ID��ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -305,7 +305,7 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	/**
-	 * 删除所有选中的模型对象�?
+	 * ɾ������ѡ�е�ģ�Ͷ���
 	 * 
 	 * @return
 	 * @see com.opensymphony.xwork2.ActionSupport#execute()
@@ -340,7 +340,6 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	protected void prepareModel() {
 	}
 
-	@SuppressWarnings("unchecked")
 	private ParamsWrapper buildParamsWrapper() {
 		ParamsWrapper parameters = new ParamsWrapper();
 		parameters.setFilters(filters);

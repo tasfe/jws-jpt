@@ -16,124 +16,186 @@ import ${package}.model.helper.ParamsWrapper;
 
 public class BasicDaoiBatis extends SqlMapClientDaoSupport implements Dao {
 
+	private static final String PREV = "prev";
+
 	public List list(Class clazz) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getSelectQuery(clazz), null);
+		String query = iBatisDaoUtils.getSelectQuery(clazz);
+		Object p = executeNextQuery(query, null, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List list(String name) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name), null);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, null, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List find(Class clazz, Object parameter) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getSelectQuery(clazz), parameter);
+		String query = iBatisDaoUtils.getSelectQuery(clazz);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List find(String name, Object parameter) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name), parameter);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public Object get(Class clazz, Object parameter) {
-		return getSqlMapClientTemplate().queryForObject(
-				iBatisDaoUtils.getFindQuery(clazz), parameter);
+		String query = iBatisDaoUtils.getFindQuery(clazz);
+		Object p = executeNextQuery(query, parameter, PREV);
+		Object result = getSqlMapClientTemplate().queryForObject(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public Object get(String name, Object parameter) {
-		return getSqlMapClientTemplate().queryForObject(
-				iBatisDaoUtils.getFindQuery(name), parameter);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, parameter, PREV);
+		Object result = getSqlMapClientTemplate().queryForObject(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List page(Class clazz, int offset, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getSelectQuery(clazz), null, offset, limit);
+		String query = iBatisDaoUtils.getSelectQuery(clazz);
+		Object p = executeNextQuery(query, null, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p, offset,
+				limit);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List page(Class clazz, Object parameter, int offset, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getSelectQuery(clazz), parameter, offset, limit);
+		String query = iBatisDaoUtils.getSelectQuery(clazz);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p, offset,
+				limit);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List page(String name, int offset, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name), null, offset, limit);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, null, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p, offset,
+				limit);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List page(String name, Object parameter, int offset, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name), parameter, offset, limit);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p, offset,
+				limit);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List rand(Class clazz, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getRandQuery(clazz),
-				iBatisDaoUtils.buildRands(null, limit));
+		Object parameter = iBatisDaoUtils.buildRands(null, limit);
+		String query = iBatisDaoUtils.getRandQuery(clazz);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List rand(Class clazz, Object parameter, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getRandQuery(clazz),
-				iBatisDaoUtils.buildRands(parameter, limit));
+		parameter = iBatisDaoUtils.buildRands(parameter, limit);
+		String query = iBatisDaoUtils.getRandQuery(clazz);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List rand(String name, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name),
-				iBatisDaoUtils.buildRands(null, limit));
+		Object parameter = iBatisDaoUtils.buildRands(null, limit);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public List rand(String name, Object parameter, int limit) {
-		return getSqlMapClientTemplate().queryForList(
-				iBatisDaoUtils.getFindQuery(name),
-				iBatisDaoUtils.buildRands(parameter, limit));
+		parameter = iBatisDaoUtils.buildRands(parameter, limit);
+		String query = iBatisDaoUtils.getFindQuery(name);
+		Object p = executeNextQuery(query, parameter, PREV);
+		List result = getSqlMapClientTemplate().queryForList(query, p);
+		executeNextQuery(query, p, null);
+		return result;
 	}
 
 	public void remove(Class clazz, Object parameter) {
 		String query = iBatisDaoUtils.getDeleteQuery(clazz);
-		getSqlMapClientTemplate().update(query, parameter);
-		executeNextQuery(query, parameter);
+		Object p = executeNextQuery(query, parameter, PREV);
+		getSqlMapClientTemplate().update(query, p);
+		executeNextQuery(query, p, null);
 	}
 
 	public void remove(String name, Object parameter) {
 		String query = iBatisDaoUtils.getDeleteQuery(name);
-		getSqlMapClientTemplate().update(query, parameter);
-		executeNextQuery(query, parameter);
+		Object p = executeNextQuery(query, parameter, PREV);
+		getSqlMapClientTemplate().update(query, p);
+		executeNextQuery(query, p, null);
 	}
 
 	public void saveOrUpdate(Object o) {
+		Object p = null;
 		if (o != null) {
 			Class clazz = o.getClass();
 			String query = null;
 			if (iBatisDaoUtils.getPrimaryKey(o) == null) {
 				query = iBatisDaoUtils.getInsertQuery(clazz);
+				p = executeNextQuery(query, o, PREV);
 				iBatisDaoUtils.setPrimaryKey(o, getSqlMapClientTemplate()
-						.insert(query, o));
+						.insert(query, p));
 			} else {
 				query = iBatisDaoUtils.getUpdateQuery(clazz);
-				getSqlMapClientTemplate().update(query, o);
+				p = executeNextQuery(query, o, PREV);
+				getSqlMapClientTemplate().update(query, p);
 			}
-			executeNextQuery(query, o);
+			executeNextQuery(query, p, null);
 		}
 	}
 
 	public void save(String name, Object o) {
 		if (o != null) {
 			String query = iBatisDaoUtils.getInsertQuery(name);
+			Object p = executeNextQuery(query, o, PREV);
 			iBatisDaoUtils.setPrimaryKey(o, getSqlMapClientTemplate().insert(
-					query, o));
-			executeNextQuery(query, o);
+					query, p));
+			executeNextQuery(query, p, null);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void executeNextQuery(String query, Object parameter) {
+	private Object executeNextQuery(String query, Object parameter,
+			String prefix) {
+		Object p = parameter;
 		String[] nexts = null;
+
 		Map parameters = new HashMap();
 		parameters.put("p0", parameter);
 
-		for (int i = 0; (nexts = iBatisDaoUtils.getNextQuery(query, i)) != null; i++) {
+		String ppname = "p";
+		if (prefix != null) {
+			ppname = prefix + "_p";
+		}
+
+		for (int i = 0; (nexts = iBatisDaoUtils.getNextQuery(query, i, prefix)) != null; i++) {
 			if (queryExist(nexts[0])) {
 				List result = getSqlMapClientTemplate().queryForList(nexts[0],
 						parameters);
@@ -142,30 +204,36 @@ public class BasicDaoiBatis extends SqlMapClientDaoSupport implements Dao {
 				} else {
 					parameter = result;
 				}
-				parameters.put("p" + (i + 1), parameter);
+				parameters.put(ppname + (i + 1), parameter);
+				p = parameters;
 			} else if (queryExist(nexts[1])) {
 				getSqlMapClientTemplate().update(nexts[1], parameters);
+				p = parameters;
 			} else if (queryExist(nexts[2])) {
 				getSqlMapClientTemplate().insert(nexts[2], parameters);
+				p = parameters;
 			} else {
-				return;
+				break;
 			}
 		}
+		return p;
 	}
 
 	public void update(Object o) {
 		if (o != null) {
 			String query = iBatisDaoUtils.getUpdateQuery(o.getClass());
-			getSqlMapClientTemplate().update(query, o);
-			executeNextQuery(query, o);
+			Object p = executeNextQuery(query, o, PREV);
+			getSqlMapClientTemplate().update(query, p);
+			executeNextQuery(query, p, null);
 		}
 	}
 
 	public void update(String name, Object o) {
 		if (o != null) {
 			String query = iBatisDaoUtils.getUpdateQuery(name);
-			getSqlMapClientTemplate().update(query, o);
-			executeNextQuery(query, o);
+			Object p = executeNextQuery(query, o, PREV);
+			getSqlMapClientTemplate().update(query, p);
+			executeNextQuery(query, p, null);
 		}
 	}
 

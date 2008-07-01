@@ -39,8 +39,6 @@ public class StrutsSpringObjectFactory extends SpringObjectFactory {
 
 	private String managerClassNamePostfix = "ManagerImpl";
 
-	private String actionType;
-
 	private String basicManager = "manager";
 
 	private String basicDao = "dao";
@@ -91,11 +89,9 @@ public class StrutsSpringObjectFactory extends SpringObjectFactory {
 
 	@Inject
 	public StrutsSpringObjectFactory(
-			@Inject(value = StrutsConstants.STRUTS_OBJECTFACTORY_SPRING_AUTOWIRE, required = false)
-			String autoWire,
-			@Inject(value = StrutsConstants.STRUTS_OBJECTFACTORY_SPRING_USE_CLASS_CACHE, required = false)
-			String useClassCacheStr, @Inject
-			ServletContext servletContext) {
+			@Inject(value = StrutsConstants.STRUTS_OBJECTFACTORY_SPRING_AUTOWIRE, required = false) String autoWire,
+			@Inject(value = StrutsConstants.STRUTS_OBJECTFACTORY_SPRING_USE_CLASS_CACHE, required = false) String useClassCacheStr,
+			@Inject ServletContext servletContext) {
 
 		super();
 		boolean useClassCache = "true".equals(useClassCacheStr);
@@ -139,16 +135,12 @@ public class StrutsSpringObjectFactory extends SpringObjectFactory {
 	@Override
 	public Object buildAction(String actionName, String namespace,
 			ActionConfig config, Map extraContext) throws Exception {
+		String beanName = config.getClassName();
+		String actionType = null;
 		int i = actionName.indexOf("/");
 		if (i != -1) {
 			actionType = actionName.substring(0, i);
 		}
-		return super.buildAction(actionName, namespace, config, extraContext);
-	}
-
-	@Override
-	public Object buildBean(String beanName, Map extraContext,
-			boolean injectInternal) throws Exception {
 		if (!appContext.containsBean(beanName)) {
 			String modelName = getModelName(beanName);
 			if (modelName != null) {
@@ -186,7 +178,7 @@ public class StrutsSpringObjectFactory extends SpringObjectFactory {
 				}
 			}
 		}
-		return super.buildBean(beanName, extraContext, injectInternal);
+		return super.buildBean(beanName, extraContext, true);
 	}
 
 	private String getModelName(String actionBeanName) {

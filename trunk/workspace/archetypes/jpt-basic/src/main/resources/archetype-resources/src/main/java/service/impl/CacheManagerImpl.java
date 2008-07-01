@@ -2,17 +2,18 @@ package ${package}.service.impl;
 
 import java.util.List;
 
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.providers.dao.UserCache;
+
 import ${package}.dao.Dao;
 import ${package}.model.Resource;
 import ${package}.model.User;
+import ${package}.model.helper.SecurityHelper;
 import ${package}.security.resourcedetails.ResourceCache;
 import ${package}.security.resourcedetails.ResourceDetails;
 import ${package}.security.service.SecurityCacheManager;
 import ${package}.service.CacheManager;
 import ${package}.service.ModelStatics;
-
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.providers.dao.UserCache;
 
 public class CacheManagerImpl implements CacheManager, SecurityCacheManager,
 		ModelStatics {
@@ -64,17 +65,17 @@ public class CacheManagerImpl implements CacheManager, SecurityCacheManager,
 
 	private void putUser(User user) {
 		if (user != null) {
-			GrantedAuthority[] authorities = ConvertUtil.p2ga(dao.find(
+			GrantedAuthority[] authorities = SecurityHelper.p2ga(dao.find(
 					M_PERMIS_BY_USER, user.getId()));
-			userCache.putUserInCache(ConvertUtil.u2ud(user, authorities));
+			userCache.putUserInCache(SecurityHelper.u2ud(user, authorities));
 		}
 	}
 
 	private void putResource(Resource resource) {
 		if (resource != null) {
-			GrantedAuthority[] authorities = ConvertUtil.p2ga(dao.find(
+			GrantedAuthority[] authorities = SecurityHelper.p2ga(dao.find(
 					M_PERMIS_BY_RESOURCE, resource.getId()));
-			resourceCache.putResourceInCache(ConvertUtil.r2rd(resource,
+			resourceCache.putResourceInCache(SecurityHelper.r2rd(resource,
 					authorities));
 		}
 	}

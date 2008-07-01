@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@SuppressWarnings("deprecation")
 public class LocaleRequestWrapper extends HttpServletRequestWrapper {
 
 	private static final Log logger = LogFactory

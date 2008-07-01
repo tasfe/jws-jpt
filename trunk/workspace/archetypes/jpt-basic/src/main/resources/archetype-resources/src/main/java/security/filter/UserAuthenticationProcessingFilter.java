@@ -6,15 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ${package}.Constants;
-import ${package}.security.service.SecurityUserManager;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.event.authentication.InteractiveAuthenticationSuccessEvent;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.acegisecurity.userdetails.UserDetails;
+
+import ${package}.Constants;
+import ${package}.security.service.SecurityUserManager;
 
 public class UserAuthenticationProcessingFilter extends
 		AuthenticationProcessingFilter {
@@ -90,10 +90,12 @@ public class UserAuthenticationProcessingFilter extends
 
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+		sb
+				.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
 		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
 		sb.append("<head>");
-		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+		sb
+				.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 		sb.append("<title></title>");
 		sb.append("<meta name=\"jpt\" content=\"j_acegi_security_check\" />");
 		sb.append("<meta http-equiv=\"Refresh\" Content=\"0;Url=");
@@ -104,7 +106,7 @@ public class UserAuthenticationProcessingFilter extends
 		sb.append("<body>");
 		sb.append("</body>");
 		sb.append("</html>");
-		
+
 		response.getWriter().write(sb.toString());
 		response.flushBuffer();
 	}

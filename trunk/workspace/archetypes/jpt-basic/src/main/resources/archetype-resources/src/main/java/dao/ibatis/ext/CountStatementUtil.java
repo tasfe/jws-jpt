@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import ${package}.util.ReflectUtil;
-
 import com.ibatis.common.jdbc.exception.NestedSQLException;
 import com.ibatis.sqlmap.client.event.RowHandler;
 import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
@@ -21,6 +19,7 @@ import com.ibatis.sqlmap.engine.mapping.statement.RowHandlerCallback;
 import com.ibatis.sqlmap.engine.mapping.statement.SelectStatement;
 import com.ibatis.sqlmap.engine.scope.ErrorContext;
 import com.ibatis.sqlmap.engine.scope.RequestScope;
+import ${package}.util.ReflectUtil;
 
 public class CountStatementUtil {
 

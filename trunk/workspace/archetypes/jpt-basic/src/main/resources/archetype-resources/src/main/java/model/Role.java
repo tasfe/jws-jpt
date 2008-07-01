@@ -8,25 +8,25 @@ public class Role extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 3690197650654049848L;
 
 	private String name;
-	
+
 	private String descr;
-	
+
 	private List<Permission> permissions;
-	
+
 	private Long[] permisids;
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getDescr() {
 		return descr;
 	}
-	
+
 	public void setDescr(String descr) {
 		this.descr = descr;
 	}

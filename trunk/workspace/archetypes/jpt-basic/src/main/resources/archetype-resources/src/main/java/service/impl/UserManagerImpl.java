@@ -7,6 +7,7 @@ import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 
 import ${package}.model.User;
+import ${package}.model.helper.SecurityHelper;
 import ${package}.security.service.SecurityUserManager;
 import ${package}.service.CacheManager;
 import ${package}.service.ModelStatics;
@@ -51,7 +52,7 @@ public class UserManagerImpl extends BasicManagerImpl<User> implements
 			throw new UsernameNotFoundException("user '" + username
 					+ "' not found...");
 		}
-		return ConvertUtil.u2ud(user, ConvertUtil.p2ga(dao.find(
+		return SecurityHelper.u2ud(user, SecurityHelper.p2ga(dao.find(
 				M_PERMIS_BY_USER, user.getId())));
 	}
 

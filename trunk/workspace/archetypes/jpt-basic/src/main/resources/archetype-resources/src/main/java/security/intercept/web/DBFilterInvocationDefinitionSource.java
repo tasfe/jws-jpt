@@ -3,13 +3,13 @@ package ${package}.security.intercept.web;
 import java.util.Iterator;
 import java.util.Set;
 
-import ${package}.security.ext.AuthorizeSupport;
-
 import org.acegisecurity.ConfigAttributeDefinition;
 import org.acegisecurity.SecurityConfig;
 import org.acegisecurity.intercept.web.AbstractFilterInvocationDefinitionSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import ${package}.security.ext.AuthorizeSupport;
 
 public class DBFilterInvocationDefinitionSource extends
 		AbstractFilterInvocationDefinitionSource {

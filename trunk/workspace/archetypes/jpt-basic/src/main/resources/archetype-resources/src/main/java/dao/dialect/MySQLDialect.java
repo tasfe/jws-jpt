@@ -6,8 +6,8 @@ public class MySQLDialect implements Dialect {
 
 	public String getLimitString(String sql, boolean hasOffset) {
 		return new StringBuffer(sql.length() + 20).append(trim(sql)).append(
-				hasOffset ? " limit ?-1,?" : " limit ?")
-				.append(SQL_END_DELIMITER).toString();
+				hasOffset ? " limit ?-1,?" : " limit ?").append(
+				SQL_END_DELIMITER).toString();
 	}
 
 	public String getLimitString(String sql, int offset, int limit) {

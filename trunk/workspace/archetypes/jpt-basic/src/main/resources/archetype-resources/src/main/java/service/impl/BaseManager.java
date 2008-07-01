@@ -7,13 +7,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-import ${package}.dao.Dao;
 import ognl.Ognl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.ClassUtils;
+
+import ${package}.dao.Dao;
 
 public abstract class BaseManager<T> {
 

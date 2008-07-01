@@ -16,11 +16,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ${package}.service.FileManager;
-import ${package}.util.FileUtil;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import ${package}.service.FileManager;
+import ${package}.util.FileUtil;
 
 public class DownloadFilter implements Filter {
 

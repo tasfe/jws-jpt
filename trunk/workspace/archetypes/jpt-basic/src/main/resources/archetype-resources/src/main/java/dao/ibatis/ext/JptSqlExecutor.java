@@ -3,14 +3,13 @@ package ${package}.dao.ibatis.ext;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import ${package}.dao.dialect.Dialect;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.ibatis.sqlmap.engine.execution.SqlExecutor;
 import com.ibatis.sqlmap.engine.mapping.statement.RowHandlerCallback;
 import com.ibatis.sqlmap.engine.scope.RequestScope;
+import ${package}.dao.dialect.Dialect;
 
 public class JptSqlExecutor extends SqlExecutor {
 
@@ -48,7 +47,7 @@ public class JptSqlExecutor extends SqlExecutor {
 		}
 
 		try {
-			super.executeQuery(request, conn, sql, parameters, skipResults,
+			super.executeQuery(request, conn, sql, parameters, skipResults - 1,
 					maxResults, callback);
 			if (logger.isDebugEnabled()) {
 				logger.debug(stripSql(sql));
@@ -95,13 +94,13 @@ public class JptSqlExecutor extends SqlExecutor {
 		}
 		return false;
 	}
-	
+
 	private String stripSql(String sql) {
 		sql = sql.replaceAll("\\s+", " ");
 		sql = sql.replaceAll("\\s*,\\s*", ",");
 		sql = sql.replaceAll("\\s*\\(\\s*", "(");
 		sql = sql.replaceAll("\\s*\\)\\s*", ")");
-		
+
 		return sql;
 	}
 

@@ -118,6 +118,28 @@ function addBookmark (title, url) {
 	}
 }
 
+function addReqParams (data) {
+	jQuery.extend(data, {
+		params : {},
+		filters : {}
+	})
+	if (document.location && document.location.search) {
+		jQuery.each(document.location.search.substr(1).split('&'), function (i, param) {
+			var pair = param.split('=');
+			var dotPos = pair[0].indexOf('.');
+			if (dotPos != -1) {
+				var prefix = pair[0].substr(0, dotPos);
+				if (!data[prefix]) {
+					data[prefix] = {};
+				}
+				data[prefix][decodeURIComponent(pair[0].substr(dotPos + 1))] = decodeURIComponent(pair[1]);
+			} else {
+				data.params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+			}
+		});
+	}
+}
+
 function afterClick (el, args) {
 	var after = fnByName(el.name, 'after');
 	if ($.isFunction(after)) {
@@ -145,13 +167,14 @@ function fnByName (name, prefix) {
 	return window[prefix + name.capitalize()];
 }
 
-function getJSON (url) {
+function getJSON (url, form) {
 	var result = {};
 	$.ajax({
-		type : 'get',
+		type : (form?'post':'get'),
 		url : url,
 		async: false,
 		success : function (data, status) {result = data;},
+		data : (form?$(form).serialize():{}),
 		dataType : 'json'
 	});
 	return result;
@@ -160,11 +183,11 @@ function getJSON (url) {
 function getMethod (url) {
 	url = '/' + url;
 	var method = '';
-	var re = /^.*?\/\w+-(\w+)-\w+(\/\d+)?\.(json|html).*$/;
+	var re = /^.*?\/\w+-(\w+)-\w+(\/\d+)?\.html.*$/;
 	if (re.test(url)) {
 		method = url.replace(re, '$1');
 	} else {
-		re = /^.*?\/(\w+)(-\w+)?(\/\d+)?\.(json|html).*$/;
+		re = /^.*?\/(\w+)(-\w+)?(\/\d+)?\.html.*$/;
 		if (re.test(url)) {
 			method = url.replace(re, '$1');
 		}			
@@ -174,7 +197,7 @@ function getMethod (url) {
 		return JPT.ctx.rewrites[method];
 	}
 	
-	var relativeURL = url.replace(/^.*?\/pages\/(\w+\/[^\/]+)(\/\d+)?\.(json|html).*$/, '$1');
+	var relativeURL = url.replace(/^.*?\/pages\/(\w+\/[^\/]+)(\/\d+)?\.html.*$/, '$1');
 	if (JPT.ctx.rewrites[relativeURL]) {
 		return JPT.ctx.rewrites[relativeURL];
 	}
@@ -215,16 +238,12 @@ function getPagerHTML (pager) {
 	return html;
 }
 
-function getServerUrl (url, ext) {
-	var serverUrl;
-	var re = /\/(pages\/\w+\/[^\/]+(\/\d+)?)\.html/;
-	if (re.test(url)) {
-		serverUrl = url.replace(re, '/server/$1.' + $V(ext, 'json'));
-	} else {
-		serverUrl = url;
+function getServerUrl (url, method, ext) {
+	var re = /\/(pages\/\w+\/\w+-)\w+(-\w+(\/\d+)?)\.html/;
+	if (!re.test(url)) {
+		re = /\/(pages\/\w+\/)\w+((-\w+)?(\/\d+)?)\.html/;		
 	}
-
-	return serverUrl;
+	return url.replace(re, '/server/$1' + method + '$2.' + $V(ext, 'json'));;
 }
 
 function goFirstPage () {
@@ -412,27 +431,8 @@ function loadScripts2 (scripts) {
 	});
 }
 
-function mergeData (data) {
-	data.params = data.params || {};
-	if (document.location && document.location.search) {
-		jQuery.each(document.location.search.substr(1).split('&'), function (i, param) {
-			var pair = param.split('=');
-			var dotPos = pair[0].indexOf('.');
-			if (dotPos != -1) {
-				var prefix = pair[0].substr(0, dotPos);
-				if (!data[prefix]) {
-					data[prefix] = {};
-				}
-				data[prefix][decodeURIComponent(pair[0].substr(dotPos + 1))] = decodeURIComponent(pair[1]);
-			} else {
-				data.params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-			}
-		});
-	}
-}
-
 function parseJST (data) {
-	mergeData(data);
+	addReqParams(data);
 	if (jQuery('#main_jst')) {
 		if (jQuery.isFunction(window.beforeParseJST)) {
 			window.beforeParseJST(data);

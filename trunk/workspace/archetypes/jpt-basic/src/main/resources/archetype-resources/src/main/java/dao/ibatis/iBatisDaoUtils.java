@@ -3,16 +3,15 @@ package ${package}.dao.ibatis;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import ${package}.util.ReflectUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.ClassUtils;
+
+import ${package}.util.ReflectUtil;
 
 public final class iBatisDaoUtils {
 
@@ -61,13 +60,17 @@ public final class iBatisDaoUtils {
 		return "update" + StringUtils.capitalize(name);
 	}
 
-	public static String[] getNextQuery(String query, int current) {
+	public static String[] getNextQuery(String query, int current, String prefix) {
 		if (query == null) {
 			return null;
 		}
+		String join = ".";
+		if (prefix != null) {
+			join += prefix + ".";
+		}
 		current++;
-		return new String[] { query + "." + current + ".s",
-				query + "." + current + ".u", query + "." + current + ".i" };
+		return new String[] { query + join + current + ".s",
+				query + join + current + ".u", query + join + current + ".i" };
 	}
 
 	public static String getDeleteQuery(String name) {
@@ -80,17 +83,6 @@ public final class iBatisDaoUtils {
 
 	public static void setPrimaryKey(Object o, Object primaryKey) {
 		ReflectUtil.setFieldValue(o, PRIMARY_KEY, Long.class, primaryKey);
-	}
-
-	public static Map<String, Object> buildReference(Long master, Object slaves) {
-		Map<String, Object> parameter = new HashMap<String, Object>();
-		parameter.put("master", master);
-		if (slaves instanceof List) {
-			parameter.put("slaves", slaves);
-		} else {
-			parameter.put("slave", slaves);
-		}
-		return parameter;
 	}
 
 	public static Map<String, Object> buildRands(Object parameter, int limit) {

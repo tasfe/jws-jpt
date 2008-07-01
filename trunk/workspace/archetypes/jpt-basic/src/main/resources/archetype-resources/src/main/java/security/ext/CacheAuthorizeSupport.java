@@ -3,9 +3,9 @@ package ${package}.security.ext;
 import java.util.HashSet;
 import java.util.Set;
 
-import ${package}.security.service.SecurityCacheManager;
-
 import org.acegisecurity.GrantedAuthority;
+
+import ${package}.security.service.SecurityCacheManager;
 
 public class CacheAuthorizeSupport extends AuthorizeSupport {
 
