@@ -2,12 +2,11 @@ package ${package}.dao.ibatis.ext;
 
 import java.util.Map;
 
-import ${package}.util.ReflectUtil;
-
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.engine.execution.SqlExecutor;
 import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
 import com.ibatis.sqlmap.engine.mapping.sql.dynamic.elements.SqlTagHandlerFactory;
+import ${package}.util.ReflectUtil;
 
 public class SqlMapClientFactoryBean extends
 		org.springframework.orm.ibatis.SqlMapClientFactoryBean {

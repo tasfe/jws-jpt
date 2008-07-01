@@ -11,13 +11,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import ${package}.security.jcaptcha.ImageCaptchaSecurityContext;
-
 import org.acegisecurity.captcha.CaptchaServiceProxy;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
+
+import ${package}.security.jcaptcha.ImageCaptchaSecurityContext;
 
 public class ImageCaptchaValidationProcessingFilter implements
 		InitializingBean, Filter {

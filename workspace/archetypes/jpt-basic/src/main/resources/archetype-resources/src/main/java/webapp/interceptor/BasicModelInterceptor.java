@@ -7,9 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import ${package}.Constants;
-import ${package}.model.helper.ModelHelper;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +16,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.opensymphony.xwork2.util.ValueStack;
+import ${package}.Constants;
+import ${package}.model.helper.ModelHelper;
 
 public class BasicModelInterceptor extends AbstractInterceptor {
 
@@ -47,9 +46,10 @@ public class BasicModelInterceptor extends AbstractInterceptor {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.opensymphony.xwork2.interceptor.AbstractInterceptor#intercept(com.opensymphony.xwork2.ActionInvocation)
+	 * @see
+	 * com.opensymphony.xwork2.interceptor.AbstractInterceptor#intercept(com
+	 * .opensymphony.xwork2.ActionInvocation)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 

@@ -15,6 +15,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 
 import ${package}.Constants;
+import ${package}.model.PublicObject;
 import ${package}.util.PropertiesUtil;
 
 public class ModelHelper {
@@ -26,7 +27,6 @@ public class ModelHelper {
 	private ModelHelper() {
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Object getModel(String name, String postfix) {
 		String classnameBase = "${package}.model."
 				+ StringUtils.capitalize(name);
@@ -49,9 +49,7 @@ public class ModelHelper {
 					}
 				}
 			}
-			Map model = new HashMap();
-			model.put("ctx", new HashMap());
-			return model;
+			return new PublicObject();
 		}
 	}
 

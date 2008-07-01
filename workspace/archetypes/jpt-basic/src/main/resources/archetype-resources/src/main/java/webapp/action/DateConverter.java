@@ -4,11 +4,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
-import ${package}.util.DateUtil;
-
 import org.apache.struts2.util.StrutsTypeConverter;
 
 import com.opensymphony.xwork2.util.TypeConversionException;
+import ${package}.util.DateUtil;
 
 public class DateConverter extends StrutsTypeConverter {
 

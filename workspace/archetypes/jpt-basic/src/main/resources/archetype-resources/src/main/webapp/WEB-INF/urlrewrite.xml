@@ -20,7 +20,7 @@
     </rule>
     
     <rule>
-	    <from>^/server/.*?\.(js|json|html|css|ftl)$</from>
+	    <from>^/server/.*?\.(js|json|html|css|ftl|jsp)$</from>
 	    <set type="response-header" name="Cache-Control">no-store</set>
     	<set type="response-header" name="Pragma">no-cache</set>
     	<set type="response-header" name="Expires">0</set>	
@@ -39,20 +39,25 @@
 	<!-- from /server/batch/cells.json to /batch/json/cells.action -->
 	<!-- from /server/batch/cells.html to /batch/html/cells.action -->
 	<rule>
-	    <from>^/server/batch/(\w+).(json|html)$</from>
+	    <from>^/server/batch/(\w+).(json|html|jsp)$</from>
 	    <to last="true">/batch/$2/$1.action</to>	
     </rule>
     
 	<!-- from /server/upload/menuImage.html to /upload/menuImage.action -->
 	<rule>
-	    <from>^/server/upload/(\w+).html$</from>
-	    <to last="true">/upload/$1.action</to>
+	    <from>^/server/upload/(\w+).(html|jsp)$</from>
+	    <to last="true">/upload/$2/$1.action</to>
+    </rule>
+    
+    <rule>
+	    <from>^/server/upload2/(\w+).(html|jsp)$</from>
+	    <to last="true">/upload2/$2/$1.action</to>
     </rule>
     
 	<!-- from /server/public/navMenus.json to /default/json/navMenus.action -->
 	<!-- from /server/public/navMenus.html to /default/html/navMenus.action -->
 	<rule>
-	    <from>^/server/\w+/(\w+).(json|html)$</from>
+	    <from>^/server/\w+/(\w+).(json|html|jsp)$</from>
 	    <to last="true">/default/$2/$1.action</to>	
     </rule>
 
@@ -61,7 +66,7 @@
 	<!-- /server/pages/user/admin-new-role.json -->
 	<!-- /server/pages/user/admin-new-role.html -->
 	<rule>
-	    <from>^/server/pages/(\w+)/(\w+)-\w+-(\w+)(/(\d+))?\.(json|html)$</from>
+	    <from>^/server/pages/(\w+)/(\w+)-\w+-(\w+)(/(\d+))?\.(json|html|jsp)$</from>
 	    <set name="JPT_MODEL_NAME">$1</set>
     	<set name="JPT_MODEL_PREFIX">$2</set>
     	<set name="JPT_MODEL_POSTFIX">$3</set>
@@ -73,7 +78,7 @@
 	<!-- /server/pages/user/new-role.json -->
 	<!-- /server/pages/user/new-role.html -->
 	<rule>
-	    <from>^/server/pages/(\w+)/\w+-(\w+)(/(\d+))?\.(json|html)$</from>
+	    <from>^/server/pages/(\w+)/\w+-(\w+)(/(\d+))?\.(json|html|jsp)$</from>
 	    <set name="JPT_MODEL_NAME">$1</set>
     	<set name="JPT_MODEL_POSTFIX">$2</set>
 	    <set name="model.id">$4</set>
@@ -84,7 +89,7 @@
 	<!-- /server/pages/user/new.json -->
 	<!-- /server/pages/user/new.html -->
 	<rule>
-	    <from>^/server/pages/(\w+)/\w+(/(\d+))?\.(json|html)$</from>
+	    <from>^/server/pages/(\w+)/\w+(/(\d+))?\.(json|html|jsp)$</from>
 	    <set name="JPT_MODEL_NAME">$1</set>
     	<set name="model.id">$3</set>
     </rule>
@@ -92,7 +97,7 @@
 	<!-- from /server/pages/user/update/1234.json to /basic/json/update/user.action -->
 	<!-- from /server/pages/user/update/1234.html to /basic/html/update/user.action -->
     <rule>
-	    <from>^/server/pages/(\w+)/([\w-])+(/(\d+))?\.(json|html)$</from>
+	    <from>^/server/pages/(\w+)/([\w-]+)(/(\d+))?\.(json|html|jsp)$</from>
 	    <to last="true">/basic/$5/$2/$1.action</to>
     </rule>
 

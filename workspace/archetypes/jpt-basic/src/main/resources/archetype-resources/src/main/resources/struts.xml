@@ -33,10 +33,10 @@
                 <interceptor-ref name="params" />
                 <interceptor-ref name="conversionErrorInterceptor"/>
                 <interceptor-ref name="validation">
-                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit</param>
+                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit,execute</param>
                 </interceptor-ref>
                 <interceptor-ref name="workflow">
-                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit</param>
+                    <param name="excludeMethods">index,list,editNew,show,destroy,delete,edit,execute</param>
                 </interceptor-ref>
             </interceptor-stack>
             <interceptor-stack name="defaultModelStack">
@@ -107,6 +107,11 @@
         	<interceptor-ref name="basicModelStack"/>
         	<result name="success" type="freemarker">/server/freemarker/{2}/{1}.ftl</result>
         </action>
+        
+        <action name="basic/jsp/*/*" class="{2}JptAction">
+        	<interceptor-ref name="basicModelStack"/>
+        	<result name="success">/server/jsp/{2}/{1}.jsp</result>
+        </action>
 
         <action name="batch/json/*" class="{1}JptAction">
 			<interceptor-ref name="batchStack"/>
@@ -118,6 +123,11 @@
         <action name="batch/html/*" class="{1}JptAction">
 			<interceptor-ref name="batchStack"/>
         	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        </action>
+        
+        <action name="batch/jsp/*" class="{1}JptAction">
+			<interceptor-ref name="batchStack"/>
+        	<result name="success">/server/jsp/{1}.jsp</result>
         </action>
            
         <action name="default/json/*" method="list" class="{1}JptAction">
@@ -133,20 +143,36 @@
         	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
         	<param name="name">{1}</param>
         </action>
+        
+        <action name="default/jsp/*" class="{1}JptAction">
+        	<interceptor-ref name="defaultModelStack"/>
+        	<result name="success">/server/jsp/{1}.jsp</result>
+        	<param name="name">{1}</param>
+        </action>
 
         <action name="simple/js/*/*" class="{2}JptAction">
         	<interceptor-ref name="simpleStack"/>
         	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
         </action>
         
-        <action name="upload/*" class="{1}JptAction">
+        <action name="upload/html/*" class="{1}JptAction">
         	<interceptor-ref name="uploadStack"/>
         	<result name="success" type="freemarker">/server/freemarker/upload.ftl</result>
         </action>
         
-        <action name="default/html/*" class="{1}JptAction">
+        <action name="upload/jsp/*" class="{1}JptAction">
+        	<interceptor-ref name="uploadStack"/>
+        	<result name="success">/server/jsp/upload.ftl</result>
+        </action>
+        
+        <action name="upload2/html/*" class="{1}JptAction">
         	<interceptor-ref name="uploadStack"/>
         	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
+        </action>
+        
+        <action name="upload2/jsp/*" class="{1}JptAction">
+        	<interceptor-ref name="uploadStack"/>
+        	<result name="success">/server/jsp/{1}.ftl</result>
         </action>
 
     </package>

@@ -160,6 +160,12 @@
 			<version>${jsonplugin.version}</version>
 		</dependency>
 		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <version>${spring.version}</version>
+            <optional>true</optional>
+        </dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
 			<version>${spring.version}</version>
@@ -506,11 +512,11 @@
 #end
 			<properties>
 				<jdbc.dialect>SQLServer2005</jdbc.dialect>
-				<jdbc.groupId>net.sourceforge.jtds</jdbc.groupId>
-				<jdbc.artifactId>jtds</jdbc.artifactId>
+				<jdbc.groupId>com.microsoft</jdbc.groupId>
+				<jdbc.artifactId>sqljdbc</jdbc.artifactId>
 				<jdbc.version>1.2</jdbc.version>
-				<jdbc.url>jdbc:jtds:sqlserver://${jdbc.host}:3683/${jdbc.schema}</jdbc.url>
-				<jdbc.driverClassName>net.sourceforge.jtds.jdbc.Driver</jdbc.driverClassName>				
+				<jdbc.url>jdbc:sqlserver://${jdbc.host};databaseName=${jdbc.schema};</jdbc.url>
+				<jdbc.driverClassName>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.driverClassName>
 			</properties>
 		</profile>
 	</profiles>

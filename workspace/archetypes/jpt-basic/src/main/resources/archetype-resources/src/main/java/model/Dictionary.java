@@ -14,7 +14,7 @@ public class Dictionary extends BaseObject implements Serializable {
 	private String asscNames;
 
 	private String text;
-	
+
 	private String descr;
 
 	private Integer value;
@@ -22,7 +22,7 @@ public class Dictionary extends BaseObject implements Serializable {
 	private Integer layer;
 
 	private Integer displayOrder;
-	
+
 	private Long parentId;
 
 	private List<Dictionary> subdicts;

@@ -5,7 +5,13 @@
 		loadContext();
 		
 		if ($.isFunction(window.prepare)) {
-			var data = {};
+			var data = {
+				pager : {
+					offset : 0,
+					limit : 10,
+					totalRows : 0
+				}
+			};
 			if (!window.prepare(data)) {
 				showData(data);
 				return;
@@ -14,7 +20,8 @@
 		
 		JPT.ctx.async = true;
 		
-		var serverUrl = getServerUrl(window.location.href);
+		var method = getMethod(window.location.href);
+		var serverUrl = getServerUrl(window.location.href, method);
 		$.ajax({
 			type : 'get',
 			url : serverUrl,
@@ -24,7 +31,7 @@
 			error : (new AjaxError()).getHandler(function (xml, status, e) {
 				showData({});
 			}),
-			data : 'method:' + getMethod(serverUrl) + '=',
+			data : 'method:' + method + '=',
 			dataType : 'json'
 		});
 	});
@@ -124,10 +131,11 @@
 	}
 
 	function remove (url) {
-		var serverUrl = getServerUrl(url);
+		var method = getMethod(url);
+		var serverUrl = getServerUrl(url, method);
 		request(
 			serverUrl,
-			'method:' + getMethod(serverUrl),
+			'method:' + method,
 			$('form.jpt-list-form').serialize(),
 			'',
 			function () {
@@ -137,13 +145,13 @@
 	}
 	
 	function submit (el) {	
-		var serverUrl = getServerUrl(el.form.action);
 		var method;
 		if (el.name.indexOf('method:') == 0) {
 			method = el.name.substr(7);
 		} else {
-			method = getMethod(serverUrl);
+			method = getMethod(el.form.action);
 		}
+		var serverUrl = getServerUrl(el.form.action, method);
 		request(
 			serverUrl,
 			'method:' + method,

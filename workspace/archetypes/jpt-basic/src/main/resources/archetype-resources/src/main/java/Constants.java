@@ -41,7 +41,7 @@ public class Constants {
 	//
 	// 可配置的常量
 	//
-	
+
 	/**
 	 * @return 重新授权后是否需要重新登录
 	 */

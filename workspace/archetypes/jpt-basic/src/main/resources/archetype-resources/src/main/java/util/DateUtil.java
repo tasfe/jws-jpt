@@ -162,6 +162,12 @@ public class DateUtil {
 		return cal.get(Calendar.YEAR);
 	}
 
+	public static int getYear(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.YEAR);
+	}
+
 	public static Date now() {
 		return new Date();
 	}
