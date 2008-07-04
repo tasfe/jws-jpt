@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title></title>
 <link type="text/css" media="all" rel="stylesheet" href="styles/default/basic.css" />
-<link type="text/css" media="all" rel="stylesheet" href="styles/default/tree.css" />
+<link type="text/css" media="all" rel="stylesheet" href="styles/default/jquery.treeview.css" />
 <style type="text/css">
 <!--
 .head {
@@ -21,8 +21,13 @@
 }
 
 .subs {
-	background:#f4f3ee;
+	background:#ffffff;
 	border-bottom:1px solid #000000;
+}
+
+.treeview {
+	margin-left:10px;
+	font-size:13px;
 }
 
 #navigation .selected div {
@@ -80,8 +85,11 @@ $(document).ready (function () {
 		resize();
 	});
 	resize();
-	$('.tree').SimpleTree();
-	$('.toggler').click();
+	$('.treeview').each(function (i, treeview) {
+		$(treeview).treeview({
+			url : $(treeview).attr('lihref')
+		});
+	});
 	$('.subnav a').click(function () {
 		$('a.highlight').removeClass('highlight');
 		$(this).addClass('highlight');
@@ -113,20 +121,7 @@ function resize () {
 		<div class="subs">
 		{else}
 			{if menu.suburl}
-			<div class="tree">
-				<ul>
-					<li class="root">
-						<ul>
-							<li>
-								<span class="text"><a href="${$V(menu.url,defaultUrl)}" target="mainFrame">${menu.name}</a></span>
-								<ul class="ajax">
-									<li>{url:${menu.suburl}}</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
+			<ul class="treeview" lihref="${menu.suburl}"></ul>
 			{else}
 			<div class="subnav"><a href="${$V(menu.url,defaultUrl)}" target="mainFrame"><img src="images/menu/${menu.img}" />${menu.name}</a></div>
 			{/if}

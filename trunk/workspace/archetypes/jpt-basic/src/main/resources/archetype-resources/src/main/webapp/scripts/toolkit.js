@@ -388,8 +388,16 @@ function loadNav (hasTree) {
 	if (!allScripts['ui.accordion.js']) {
 		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.accordion.js');
 	}	
-	if (hasTree && !allScripts['tree.js']) {
-		scripts.push(JPT.ctx.base + '/scripts/tree.js');
+	if (hasTree) {
+		if (!allScripts['jquery.cookie.js']) {
+			scripts.push(JPT.ctx.base + '/scripts/jquery.cookie.js');
+		}
+		if (!allScripts['jquery.treeview.js']) {
+			scripts.push(JPT.ctx.base + '/scripts/jquery.treeview.js');
+		}
+		if (!allScripts['jquery.treeview.async.js']) {
+			scripts.push(JPT.ctx.base + '/scripts/jquery.treeview.async.js');
+		}
 	}
 	loadScripts2(scripts);
 	
