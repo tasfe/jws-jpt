@@ -1,4 +1,4 @@
-<#include "/lib/global.ftl" />
+<#include "../lib/global.ftl" />
 <#assign now='now()' />
 
 <#function concat args>

@@ -1,3 +1,18 @@
+#set($ftl_st="#")
+#set($ftl_var="$")
+<${ftl_st}function getFile root filepath>
+	<${ftl_st}assign current=root />
+	<${ftl_st}list filepath?split('/') as name>
+		<${ftl_st}list current.listFiles() as file>
+			<${ftl_st}if file.name==name>
+				<${ftl_st}assign current=file />
+				<${ftl_st}break>
+			</${ftl_st}if>
+		</${ftl_st}list>
+	</${ftl_st}list>
+	<${ftl_st}return current />
+</${ftl_st}function>
+<${ftl_st}assign root=pp.loadData('eval','engine.getSourceRoot().getParentFile()')>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
 
@@ -11,29 +26,25 @@
     	maxRequests="32"
     	maxSessions="10" />
 
-	<typeAlias alias="constant" type="${package}.model.Constant" />
-	<typeAlias alias="dictionary" type="${package}.model.Dictionary" />
-	<typeAlias alias="menu" type="${package}.model.Menu" />
-	<typeAlias alias="permission" type="${package}.model.Permission" />
-	<typeAlias alias="resource" type="${package}.model.Resource" />
-	<typeAlias alias="role" type="${package}.model.Role" />
-	<typeAlias alias="user" type="${package}.model.User" />
+<${ftl_st}list getFile(root,'java/${packageInPathFormat}/model').listFiles() as file>
+<${ftl_st}if file.isFile() && file.name?ends_with('.java')>
+<${ftl_st}assign model=file.name?replace('.java','') />
+<${ftl_st}if model!='BaseObject'>
+	<typeAlias alias="${ftl_var}{model?uncap_first}" type="${package}.model.${ftl_var}{model}" />
+</${ftl_st}if>
+</${ftl_st}if>
+</${ftl_st}list>
+	
+<${ftl_st}list getFile(root,'resources/sqlmaps/declare').listFiles() as file>
+<${ftl_st}if file.isFile() && file.name?ends_with('.xml')>
+	<sqlMap resource="sqlmaps/declare/${ftl_var}{file.name}" />
+</${ftl_st}if>
+</${ftl_st}list>
 
-	<sqlMap resource="sqlmaps/declare/T007Constant.xml" />
-	<sqlMap resource="sqlmaps/declare/T006Dictionary.xml" />
-	<sqlMap resource="sqlmaps/declare/T005Menu.xml" />
-	<sqlMap resource="sqlmaps/declare/T003Permission.xml" />
-	<sqlMap resource="sqlmaps/declare/T004Resource.xml" />
-	<sqlMap resource="sqlmaps/declare/T002Role.xml" />
-	<sqlMap resource="sqlmaps/declare/T001User.xml" />
-	
-	<sqlMap resource="sqlmaps/statement/T000Misc.xml" />
-	<sqlMap resource="sqlmaps/statement/T007Constant.xml" />
-	<sqlMap resource="sqlmaps/statement/T006Dictionary.xml" />
-	<sqlMap resource="sqlmaps/statement/T005Menu.xml" />
-	<sqlMap resource="sqlmaps/statement/T003Permission.xml" />
-	<sqlMap resource="sqlmaps/statement/T004Resource.xml" />
-	<sqlMap resource="sqlmaps/statement/T002Role.xml" />
-	<sqlMap resource="sqlmaps/statement/T001User.xml" />
-	
+<${ftl_st}list getFile(root,'resources/sqlmaps/statement').listFiles() as file>
+<${ftl_st}if file.isFile() && file.name?ends_with('.xml')>
+	<sqlMap resource="sqlmaps/statement/${ftl_var}{file.name}" />
+</${ftl_st}if>
+</${ftl_st}list>
+
 </sqlMapConfig>

@@ -78,7 +78,6 @@
       <includes>
         <include>**/*.java</include>
 		<include>**/model-validation.xml</include>
-		<include>**/sql-map-config.xml</include>
       </includes>
     </fileSet>
 	<fileSet encoding="UTF-8">
@@ -86,7 +85,6 @@
       <excludes>        
         <exclude>**/*.java</exclude>
 		<exclude>**/model-validation.xml</exclude>
-		<exclude>**/sql-map-config.xml</exclude>
       </excludes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">

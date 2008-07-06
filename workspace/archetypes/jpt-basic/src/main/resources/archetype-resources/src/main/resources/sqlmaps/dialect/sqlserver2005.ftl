@@ -1,4 +1,4 @@
-<#include "/lib/global.ftl" />
+<#include "../lib/global.ftl" />
 <#assign now='GETDATE()' />
 <#assign currYear='YEAR(GETDATE())' />
 

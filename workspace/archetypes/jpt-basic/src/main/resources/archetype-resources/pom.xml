@@ -291,6 +291,7 @@
 					<exclude>ApplicationResources_zh*.properties</exclude>
 					<exclude>applicationContext-resources.xml</exclude>
 					<exclude>struts.xml</exclude>
+					<exclude>sql-map-config.xml</exclude>
 					<exclude>sqlmaps/**</exclude>
 				</excludes>
 			</resource>
@@ -322,10 +323,10 @@
 						</goals>
 						<phase>compile</phase>
 						<configuration>
-							<sourceRoot>src/main/resources/sqlmaps</sourceRoot>
-							<outputRoot>target/classes/sqlmaps</outputRoot>
-							<includes>**/*.xml</includes>
-							<data>dialect:${jdbc.dialect}</data>							
+							<sourceRoot>src/main/resources</sourceRoot>
+							<outputRoot>target/classes</outputRoot>
+							<includes>sqlmaps/**/*.xml,sql-map-config.xml</includes>
+							<data>dialect:${jdbc.dialect}</data>
 						</configuration>
 					</execution>
 				</executions>				
