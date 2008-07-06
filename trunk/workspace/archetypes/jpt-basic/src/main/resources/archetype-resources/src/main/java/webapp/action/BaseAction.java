@@ -27,13 +27,24 @@ public class BaseAction<T extends Manager> extends ActionSupport {
 
 	protected Map root = new HashMap();
 
+	protected Object rawdata;
+
+	private Object onlyraw;
+
 	private String _;
 
 	public void setManager(T manager) {
 		this.manager = manager;
 	}
 
-	public Map getRoot() {
+	public Object getRoot() {
+		if (onlyraw != null) {
+			return rawdata;
+		}
+		return root;
+	}
+
+	public Map getRootMap() {
 		return root;
 	}
 
@@ -47,6 +58,14 @@ public class BaseAction<T extends Manager> extends ActionSupport {
 
 	public void setParams(Map params) {
 		this.params = params;
+	}
+
+	public Object getOnlyraw() {
+		return onlyraw;
+	}
+
+	public void setOnlyraw(Object onlyraw) {
+		this.onlyraw = onlyraw;
 	}
 
 	/**
