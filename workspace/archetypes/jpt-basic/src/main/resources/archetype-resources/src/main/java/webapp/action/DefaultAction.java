@@ -47,13 +47,13 @@ public class DefaultAction extends BaseAction {
 			writeDependency(dependency);
 
 		} else {
-			root.put(name, new ArrayList(manager.find(StringUtils
-					.uncapitalize(name), loginUser)));
+			rawdata = new ArrayList(manager.find(
+					StringUtils.uncapitalize(name), loginUser));
+			root.put(name, rawdata);
 			dependency = ModelHelper.getModelDependency(StringUtils
 					.uncapitalize(name));
 			if (dependency != null) {
 				writeDependency(dependency);
-
 			}
 		}
 
