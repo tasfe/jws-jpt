@@ -4,6 +4,7 @@ if (!window.JPT.ctx) window.JPT.ctx = {};
 JPT.ctx.lang = {
 	'tip.date.selector' : '点击选择日期',
 	'tip.del': '确定要删除吗？',
+	'tip.update': '确定要修改吗？',
 	'tip.chk': '请选择记录！',
 	'tip.create.success' : '创建成功！',
 	'tip.update.success' : '修改成功！',

@@ -96,7 +96,7 @@
     <bean id="fileManager" class="${package}.service.impl.DefaultFileManagerImpl">
     	<property name="dao" ref="dao"/>
     </bean>
-    
+     
 	<bean id="userManager" class="${package}.service.impl.UserManagerImpl">
         <property name="cacheManager" ref="cacheManager"/>
         <property name="dao" ref="dao"/>

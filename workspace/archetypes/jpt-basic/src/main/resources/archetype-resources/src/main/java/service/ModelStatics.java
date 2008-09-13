@@ -13,5 +13,5 @@ public interface ModelStatics {
 	public static final String M_USER_BY_NAME = "userByName";
 
 	public static final String M_USER_ROLE = "userRoleRef";
-
+	
 }

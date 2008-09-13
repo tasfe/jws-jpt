@@ -62,45 +62,22 @@
 		});
 		
 		$('a.jpt-ajax').each(function () {
-			if (/delete\.html/.test(this.href)) {
-				$(this).click(function () {
-					try {
-						if (confirm(JPT.ctx.lang['tip.del'])) {
-							if(!$('input[@name=model.chkIDs]').is(':checked')) {
-								alert(JPT.ctx.lang['tip.chk']);
-							} else {
-								if ($('input[@name=model.chkIDs]').length == $('input[@name=model.chkIDs]:checked').length) {
-									var pager = getPager();
-									if (pager.isLast) {
-										$('#offset').val(Math.max(1, pager.offset - pager.limit));
-									}
-								}
-								remove(this.href);
-							}
-						}
-					} catch (e) {
-						alert(e.message);
-					}
-					return false;
-				});
-			}
-			if (/destroy\/\d+\.html/.test(this.href)) {
-				$(this).click(function () {
-					try {
-						if (confirm(JPT.ctx.lang['tip.del'])) {
-							if ($('input[@name=model.chkIDs]').length == 1) {
-								var pager = getPager();
-								if (pager.isLast) {
-									$('#offset').val(Math.max(1, pager.offset - pager.limit));
-								}
-							}
-							remove(this.href);
-						}
-					} catch (e) {
-						alert(e.message);
-					}
-					return false;
-				});
+			if (/(\w+-)?delete(-\w+)?\.html/.test(this.href)) {
+				$(this).attr('batch', true);
+				$(this).attr('confirmMessage', JPT.ctx.lang['tip.del']);
+				$(this).attr('changeOffset', true);
+				doListSubmit(this);
+			} else if (/(\w+-)?destroy(-\w+)?\/\d+\.html/.test(this.href)) {
+				$(this).attr('confirmMessage', JPT.ctx.lang['tip.del']);
+				$(this).attr('changeOffset', true);
+				doListSubmit(this);
+			} else if (/(\w+-)?update(-\w+)?\.html/.test(this.href)) {
+				$(this).attr('batch', true);
+				$(this).attr('confirmMessage', JPT.ctx.lang['tip.update']);
+				doListSubmit(this);
+			} else if (/(\w+-)?update(-\w+)?\/\d+\.html/.test(this.href)) {
+				$(this).attr('confirmMessage', JPT.ctx.lang['tip.update']);
+				doListSubmit(this);
 			}
 			if (!JPT.ctx.hasContainer) {
 				this.href = rewriteURL(this.href);
@@ -130,18 +107,43 @@
 		}
 	}
 
-	function remove (url) {
-		var method = getMethod(url);
-		var serverUrl = getServerUrl(url, method);
-		request(
-			serverUrl,
-			'method:' + method,
-			$('form.jpt-list-form').serialize(),
-			'',
-			function () {
-				$('form.jpt-list-form').submit();
+	function doListSubmit (link) {		
+		$(link).click(function () {
+			var batch = $(link).attr('batch');
+			var confirmMessage = $(link).attr('confirmMessage');
+			var changeOffset = $(link).attr('changeOffset');
+			try {
+				if(batch && !$('input[@name=model.chkIDs]').is(':checked')) {
+					alert(JPT.ctx.lang['tip.chk']);
+				} else if (!confirmMessage || confirm(confirmMessage)) {
+					if (changeOffset && (
+						$('input[@name=model.chkIDs]').length == 1 ||
+						$('input[@name=model.chkIDs]').length == $('input[@name=model.chkIDs]:checked').length)) {
+						
+						var pager = getPager();
+						if (pager.isLast) {
+							$('#offset').val(Math.max(1, pager.offset - pager.limit));
+						}
+						
+					}
+					var url = link.href;
+					var method = getMethod(url);
+					var serverUrl = getServerUrl(url, method);
+					request(
+						serverUrl,
+						'method:' + method,
+						$('form.jpt-list-form').serialize(),
+						'',
+						function () {
+							$('form.jpt-list-form').submit();
+						}
+					);
+				}
+			} catch (e) {
+				alert(e.message);
 			}
-		);
+			return false;
+		});
 	}
 	
 	function submit (el) {	

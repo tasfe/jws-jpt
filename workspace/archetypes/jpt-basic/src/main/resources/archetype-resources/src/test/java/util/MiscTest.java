@@ -17,8 +17,7 @@ public class MiscTest {
 		assertEquals(Ognl.getValue("password==confirmPassword", user), false);
 		assertEquals(Ognl.getValue("password.substring(1)", user), "11111");
 		assertEquals(
-				Ognl
-						.getValue(
+				Ognl.getValue(
 								"confirmPassword.charAt(0)=='1'&&confirmPassword.charAt(1)=='2'&&confirmPassword.charAt(2)=='3'",
 								user), true);
 		Ognl.setValue("ctx.v1", user, 1);

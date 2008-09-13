@@ -126,7 +126,7 @@
         WHERE user_id=(SELECT id FROM t_users WHERE id=#p0.id# AND ${isNotPredefined()})
     </delete>
     
-    <insert id="updateUser.2.u">
+    <insert id="updateUser.2.i">
 	<include refid="addRoles" />
     </insert>
     

@@ -11,7 +11,7 @@
 -->
 </style>
 
-<script type="text/javascript" src="../../scripts/jquery.js?v=1.2.3"></script>
+<script type="text/javascript" src="../../scripts/jquery.js?v=1.2.6"></script>
 <script type="text/javascript" src="../../scripts/toolkit.js?v=1.0.0"></script>
 <script type="text/javascript" src="../../scripts/global.js?v=1.0.0"></script>
 <script type="text/javascript">
@@ -36,10 +36,6 @@ function initialize(data){
 	</div>
 	<ul>
 		<li>
-			<label for="asscNames">关联字典:</label>
-			<input type="text" class="text" name="model.asscNames" id="model_asscNames" value="${dictionary.asscNames}" />
-		</li>
-		<li>
 			<label for="text">字典文本:</label>
 			<input type="text" class="text" name="model.text" id="model_text" value="${dictionary.text}" />
 		</li>
@@ -50,6 +46,10 @@ function initialize(data){
 		<li>
 			<label for="displayOrder">显示次序:</label>
 			<input type="text" class="text" name="model.displayOrder" id="model_displayOrder" value="${dictionary.displayOrder}" />
+		</li>
+		<li>
+			<label for="asscNames">关联字典:</label>
+			<input type="text" class="text" name="model.asscNames" id="model_asscNames" value="${dictionary.asscNames}" />
 		</li>
 		<li class="op">
 			<input type="submit" class="jpt-ajax button" name="method:update" value="${JPT.ctx.lang['op.save']}" />

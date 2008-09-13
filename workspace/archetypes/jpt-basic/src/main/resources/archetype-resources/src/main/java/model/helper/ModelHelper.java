@@ -1,10 +1,5 @@
 package ${package}.model.helper;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -12,17 +7,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
 
 import ${package}.Constants;
 import ${package}.model.PublicObject;
-import ${package}.util.PropertiesUtil;
 
 public class ModelHelper {
 
 	private static final Log logger = LogFactory.getLog(ModelHelper.class);
-
-	private static Map<String, String[]> dependencies;
 
 	private ModelHelper() {
 	}
@@ -61,31 +52,12 @@ public class ModelHelper {
 	}
 
 	public static String[] getModelDependency(String name) {
-		init();
-		return dependencies.get(name);
-	}
-
-	private static void init() {
+		String dependencies = Constants.CONFIG.getConfig("model.dependencies."
+				+ name);
 		if (dependencies == null) {
-			dependencies = new HashMap<String, String[]>();
-			try {
-				Properties props = PropertiesUtil
-						.getProperties(ResourceUtils
-								.getFile("classpath:jpt.model.dependencies.properties"));
-				for (Enumeration e = props.propertyNames(); e.hasMoreElements();) {
-					String name = (String) e.nextElement();
-					String value = props.getProperty(name);
-					if (value != null) {
-						dependencies.put(name, value.split(","));
-					}
-				}
-
-			} catch (Exception e) {
-				if (logger.isDebugEnabled()) {
-					logger.debug(e.getMessage(), e.getCause());
-				}
-			}
+			return null;
 		}
+		return dependencies.split(",");
 	}
 
 }

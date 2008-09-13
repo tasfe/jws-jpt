@@ -21,6 +21,7 @@ ol, ul, li, dl, dt, dd {
 fieldset,
 legend,
 select,
+textarea,
 input.text,
 input.checkbox,
 input.radio {
