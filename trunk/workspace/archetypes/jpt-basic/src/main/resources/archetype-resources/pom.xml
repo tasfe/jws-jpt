@@ -155,7 +155,7 @@
 			<version>${struts.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.code.jsonplugin</groupId>
+			<groupId>com.googlecode</groupId>
 			<artifactId>jsonplugin</artifactId>
 			<version>${jsonplugin.version}</version>
 		</dependency>
@@ -530,7 +530,7 @@
 		<spring.version>2.0.6</spring.version>
 		<aspectj.version>1.5.3</aspectj.version>
 		<struts.version>2.0.9</struts.version>
-		<jsonplugin.version>0.19</jsonplugin.version>
+		<jsonplugin.version>0.31</jsonplugin.version>
 		<ibatis.version>2.3.0</ibatis.version>
 		<acegi.version>1.0.5</acegi.version>
 		<jcaptcha.version>1.0-RC6</jcaptcha.version>
