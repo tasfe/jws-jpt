@@ -77,7 +77,7 @@ public class BasicModelInterceptor extends AbstractInterceptor {
 			if (!StringUtils.isEmpty(modelPostfix)) {
 				if (modelPostfix.matches("^s\\d*")) {
 					name += modelPostfix;
-				} else {
+				} else if (!modelPostfix.matches("^x\\d+")) {
 					name += StringUtils.capitalize(modelPostfix);
 				}
 			}

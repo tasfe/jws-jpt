@@ -20,20 +20,15 @@ public class IsPropertyAvailableTagHandler extends ConditionalTagHandler {
 		if (parameterObject == null) {
 			return false;
 		} else if (parameterObject instanceof Map) {
-			return ((Map) parameterObject).containsKey(tag.getPropertyAttr());
+			String property = tag.getPropertyAttr();
+			if (property.startsWith("=")) {
+				return getOgnlValue(parameterObject, property);
+			}
+			return ((Map) parameterObject).containsKey(property);
 		} else {
 			String property = getResolvedProperty(ctx, tag);
 			if (property.startsWith("=")) {
-				try {
-					Object result = Ognl.getValue(property.substring(1),
-							parameterObject);
-					if (result instanceof Boolean) {
-						return (Boolean) result;
-					}
-					return result != null;
-				} catch (OgnlException ex) {
-					throw new IllegalArgumentException(ex.getMessage());
-				}
+				return getOgnlValue(parameterObject, property);
 			}
 
 			// if this is a compound property, then we need to get the next to
@@ -57,6 +52,19 @@ public class IsPropertyAvailableTagHandler extends ConditionalTagHandler {
 			} else {
 				return PROBE.hasReadableProperty(parameterObject, property);
 			}
+		}
+	}
+
+	private boolean getOgnlValue(Object parameterObject, String property) {
+		try {
+			Object result = Ognl.getValue(property.substring(1),
+					parameterObject);
+			if (result instanceof Boolean) {
+				return (Boolean) result;
+			}
+			return result != null;
+		} catch (OgnlException ex) {
+			throw new IllegalArgumentException(ex.getMessage());
 		}
 	}
 }

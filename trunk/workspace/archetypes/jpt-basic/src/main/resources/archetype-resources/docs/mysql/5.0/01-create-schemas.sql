@@ -9,7 +9,7 @@ create table t_constants
    value                numeric(16,4) not null comment '常量值。',
    descr                varchar(200) comment '说明文字。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_constants comment '常量';
 
@@ -30,7 +30,7 @@ create table t_dictionary
    layer                integer comment '字典项在级联树型结构中所处层数，当该字典项为顶层节点时，layer=0。事实上，layer等于code中/的数目。',
    display_order        integer not null default 99999999 comment '显示次序，升序排列。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_dictionary comment '字典';
 
@@ -51,7 +51,7 @@ create table t_menu_permis
    menu_id              integer not null,
    permis_id            integer not null,
    primary key (id)
-);
+) type=InnoDB;
 
 /*==============================================================*/
 /* Index: idx_menu_permis_mp                                    */
@@ -85,7 +85,7 @@ create table t_menus
    parent_id            integer comment '父菜单。',
    display_order        integer not null default 99999999 comment '显示顺序，升序排列。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_menus comment '菜单';
 
@@ -106,7 +106,7 @@ create table t_permis_res
    permis_id            integer not null,
    res_id               integer not null,
    primary key (id)
-);
+) type=InnoDB;
 
 /*==============================================================*/
 /* Index: idx_permis_res_prs                                    */
@@ -135,7 +135,7 @@ create table t_permissions
    authority            varchar(50) not null comment '权限(AUTH_开头的英文串，约定为大写)。',
    descr                varchar(200) comment '文字说明。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_permissions comment '权限（控制对资源的访问）';
 
@@ -157,7 +157,7 @@ create table t_resources
    url                  varchar(200) not null comment '资源地址（依程序中设置不同，可使用ANT通配符或正则表达式，程序默认为ANT通配符）。',
    descr                varchar(200) comment '文字说明。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_resources comment '资源（以URL标识）';
 
@@ -170,7 +170,7 @@ create table t_role_permis
    role_id              integer not null,
    permis_id            integer not null,
    primary key (id)
-);
+) type=InnoDB;
 
 /*==============================================================*/
 /* Index: idx_role_permis_rp                                    */
@@ -198,7 +198,7 @@ create table t_roles
    name                 varchar(50) not null comment '角色名。',
    descr                varchar(200) comment '说明文字。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_roles comment '角色（权限的集合）';
 
@@ -211,7 +211,7 @@ create table t_user_permis
    user_id              integer not null,
    permis_id            integer not null,
    primary key (id)
-);
+) type=InnoDB;
 
 /*==============================================================*/
 /* Index: idx_user_permis_up                                    */
@@ -240,7 +240,7 @@ create table t_user_role
    role_id              integer not null comment '角色。',
    role_level           tinyint comment '该角色对该用户的优先级。0-默认角色。',
    primary key (id)
-);
+) type=InnoDB;
 
 /*==============================================================*/
 /* Index: idx_user_role_ur                                      */
@@ -276,7 +276,7 @@ create table t_users
    email                varchar(50) comment '电子邮箱。',
    descr                varchar(200) comment '说明文字。',
    primary key (id)
-);
+) type=InnoDB;
 
 alter table t_users comment '用户';
 

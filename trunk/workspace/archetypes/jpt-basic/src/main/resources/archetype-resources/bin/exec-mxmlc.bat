@@ -1,0 +1,1 @@
+mxmlc "%FLEX_SRC%\%1.mxml" -output "%FLEX_TARGET%\%1.swf"

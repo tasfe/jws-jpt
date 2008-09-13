@@ -1,8 +1,12 @@
 package ${package}.dao.ibatis;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ognl.Ognl;
+import ognl.OgnlException;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
@@ -10,11 +14,14 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapException;
 import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
 import com.ibatis.sqlmap.engine.impl.SqlMapExecutorDelegate;
+import ${package}.Constants;
 import ${package}.dao.Dao;
 import ${package}.dao.ibatis.ext.CountStatementUtil;
 import ${package}.model.helper.ParamsWrapper;
 
 public class BasicDaoiBatis extends SqlMapClientDaoSupport implements Dao {
+
+	private static final String JPT_FOREACH_I = "jptForeachI";
 
 	private static final String PREV = "prev";
 
@@ -181,44 +188,6 @@ public class BasicDaoiBatis extends SqlMapClientDaoSupport implements Dao {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private Object executeNextQuery(String query, Object parameter,
-			String prefix) {
-		Object p = parameter;
-		String[] nexts = null;
-
-		Map parameters = new HashMap();
-		parameters.put("p0", parameter);
-
-		String ppname = "p";
-		if (prefix != null) {
-			ppname = prefix + "_p";
-		}
-
-		for (int i = 0; (nexts = iBatisDaoUtils.getNextQuery(query, i, prefix)) != null; i++) {
-			if (queryExist(nexts[0])) {
-				List result = getSqlMapClientTemplate().queryForList(nexts[0],
-						parameters);
-				if (result.size() == 1) {
-					parameter = result.get(0);
-				} else {
-					parameter = result;
-				}
-				parameters.put(ppname + (i + 1), parameter);
-				p = parameters;
-			} else if (queryExist(nexts[1])) {
-				getSqlMapClientTemplate().update(nexts[1], parameters);
-				p = parameters;
-			} else if (queryExist(nexts[2])) {
-				getSqlMapClientTemplate().insert(nexts[2], parameters);
-				p = parameters;
-			} else {
-				break;
-			}
-		}
-		return p;
-	}
-
 	public void update(Object o) {
 		if (o != null) {
 			String query = iBatisDaoUtils.getUpdateQuery(o.getClass());
@@ -289,6 +258,80 @@ public class BasicDaoiBatis extends SqlMapClientDaoSupport implements Dao {
 			}
 
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Object executeNextQuery(String query, Object parameter,
+			String prefix) {
+		Object p = parameter;
+		String[] nexts = null;
+
+		Map parameters = new HashMap();
+		parameters.put("p0", parameter);
+
+		String ppname = "p";
+		if (prefix != null) {
+			ppname = prefix + "_p";
+		}
+
+		for (int i = 0; (nexts = iBatisDaoUtils.getNextQuery(query, i, prefix)) != null; i++) {
+			if (queryExist(nexts[0])) {
+				List result = getSqlMapClientTemplate().queryForList(nexts[0],
+						parameters);
+				if (result.size() == 1) {
+					parameter = result.get(0);
+				} else {
+					parameter = result;
+				}
+				parameters.put(ppname + (i + 1), parameter);
+				p = parameters;
+			} else if (queryExist(nexts[1])) {
+				List foreachParameter = getForeachParameter(nexts[1],
+						parameters);
+				if (foreachParameter != null) {
+					for (Object item : foreachParameter) {
+						parameters.put(JPT_FOREACH_I, item);
+						getSqlMapClientTemplate().update(nexts[1], parameters);
+					}
+				} else {
+					getSqlMapClientTemplate().update(nexts[1], parameters);
+				}
+				p = parameters;
+			} else if (queryExist(nexts[2])) {
+				List listObj = getForeachParameter(nexts[2], parameters);
+				if (listObj != null) {
+					for (Object item : listObj) {
+						parameters.put(JPT_FOREACH_I, item);
+						getSqlMapClientTemplate().insert(nexts[2], parameters);
+					}
+				} else {
+					getSqlMapClientTemplate().insert(nexts[2], parameters);
+				}
+				p = parameters;
+			} else {
+				break;
+			}
+		}
+		return p;
+	}
+
+	private List getForeachParameter(String query, Object parameters) {
+		String foreachParameterName = Constants.CONFIG.getConfig("mapping.query."
+				+ query + ".foreachParameter");
+		if (foreachParameterName != null) {
+			Object foreachParameter = null;
+			try {
+				foreachParameter = Ognl.getValue(foreachParameterName,
+						parameters);
+			} catch (OgnlException e) {
+			}
+			if (foreachParameter instanceof List) {
+				return (List) foreachParameter;
+			} else if (foreachParameter instanceof Object[]) {
+				return Arrays.asList((Object[]) foreachParameter);
+			}
+		}
+		return null;
 	}
 
 	private boolean queryExist(String query) {

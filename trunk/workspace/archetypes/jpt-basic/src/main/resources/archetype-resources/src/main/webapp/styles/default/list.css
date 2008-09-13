@@ -10,6 +10,11 @@
 	height:26px;
 }
 
+.toolbar div {
+	position:absolute;
+	right: 22px;
+}
+
 .toolbar img {
 	margin-right:5px;
 	vertical-align:middle;
@@ -33,11 +38,16 @@
 }
 
 .jpt-list-table td {
-	text-align:center;
+	padding-left:5px;
 }
 
 .jpt-list-table thead tr {	
 	background:url(images/bg-thead-1.gif) repeat-x;
+	line-height:21px;
+}
+
+.jpt-list-table tbody tr {
+	background:#eff0f5;
 	line-height:21px;
 }
 
@@ -57,10 +67,12 @@
 .jpt-list-seq,
 .jpt-list-chk {
 	width:30px;
+	text-align:center;
 }
 
 .jpt-list-table .op {
 	width:150px;
+	text-align:center;
 }
 
 .jpt-list-table .op a {
@@ -72,12 +84,12 @@
 	line-height:24px;
 }
 
-.jpt-pager  ul {
+.jpt-pager ul {
 	clear:both;
 	float:right;
 }
 
-.jpt-pager  li {
+.jpt-pager li {
 	float:left;
 	margin-right:10px;
 	line-height:24px;

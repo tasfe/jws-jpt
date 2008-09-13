@@ -138,13 +138,13 @@
         	<param name="name">{1}</param>
         </action>
         
-        <action name="default/html/*" class="{1}JptAction">
+        <action name="default/html/*" method="list" class="{1}JptAction">
         	<interceptor-ref name="defaultModelStack"/>
         	<result name="success" type="freemarker">/server/freemarker/{1}.ftl</result>
         	<param name="name">{1}</param>
         </action>
         
-        <action name="default/jsp/*" class="{1}JptAction">
+        <action name="default/jsp/*" method="list" class="{1}JptAction">
         	<interceptor-ref name="defaultModelStack"/>
         	<result name="success">/server/jsp/{1}.jsp</result>
         	<param name="name">{1}</param>

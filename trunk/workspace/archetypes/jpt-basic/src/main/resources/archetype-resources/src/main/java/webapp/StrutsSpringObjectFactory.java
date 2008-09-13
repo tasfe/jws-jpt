@@ -159,13 +159,16 @@ public class StrutsSpringObjectFactory extends SpringObjectFactory {
 								ctx.getBean(basicDao));
 						rbd
 								.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME);
-						factory.registerBeanDefinition(managerBeanName, rbd);
+						factory.registerBeanDefinition(managerBeanName, rbd);						
 					} else if (actionClass != null) {
 						managerBeanName = basicManager;
-					} else {
+					}
+					if (actionClass == null) {
 						beanName = actionType + actionBeanPostfix;
 					}
+
 				}
+
 				if (!ctx.containsBean(beanName)) {
 					RootBeanDefinition rbd = new RootBeanDefinition();
 					rbd.setBeanClass(actionClass);

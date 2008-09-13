@@ -3,7 +3,6 @@ package ${package}.webapp.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -348,19 +347,20 @@ public class BasicAction<T extends Manager> extends BaseAction<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List getModels(ParamsWrapper params) throws Exception {
+	private Object getModels(ParamsWrapper params) throws Exception {
 		if (params.isPaginate()) {
 			return new ArrayList(manager.page(getListName(), params, params
 					.getOffset(), params.getLimit()));
 		}
-		return new ArrayList(manager.find(getListName(), params));
+		rawdata = new ArrayList(manager.find(getListName(), params));
+		return rawdata;
 	}
 
 	@SuppressWarnings("unchecked")
 	private void writeModel() throws Exception {
-		Object modelObj = manager.get(name, model);
-		if (modelObj != null) {
-			root.put(modelName, modelObj);
+		rawdata = manager.get(name, model);
+		if (rawdata != null) {
+			root.put(modelName, rawdata);
 		} else {
 			root.put(modelName, Collections.EMPTY_MAP);
 		}

@@ -18,7 +18,7 @@
 
 <sqlMapConfig>
     
-    <properties resource="jpt.properties" />
+    <properties resource="jpt.mapping.constants.properties" />
 	
     <settings
     	enhancementEnabled="true"

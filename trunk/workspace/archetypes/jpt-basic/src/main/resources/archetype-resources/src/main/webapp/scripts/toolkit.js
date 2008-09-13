@@ -43,39 +43,6 @@ jQuery.extend(Array.prototype, {
 		return false;
 	}
 });
-	
-function setupUploader (o) {
-	var options = jQuery.extend({
-	    button : 'upload',
-	    file : 'file',
-		onUploadStart : function () {},
-		onUploadCompleted : function (data) {}
-	}, o);
-	
-	$($ID(options.button)).click(function () {
-		var file = $($ID(options.file))[0];
-		if (file && file.value) {
-			var iframeID = 'secretIframe';
-			var iframe = $($ID(iframeID));
-			if (iframe.length == 0) {
-				$('body').append('<iframe src="javascript:void(0)" frameborder="0" width="0" height="0" id="' + iframeID + '" name="' + iframeID + '"></iframe>');
-				iframe = $($ID(iframeID));
-				iframe.css({'width':0,'height':0,'border':0});
-			}
-			iframe.load(function () {
-				if ($('body',$(this).contents()).html().indexOf('j_acegi_security_check') != -1) {
-					alert(JPT.ctx.lang['tip.timeout']);
-					window.top.location = JPT.ctx.base + '/j_acegi_logout';
-				}
-				$(this).unbind('load');
-			});
-			iframe[0].onUploadCompleted = options.onUploadCompleted;
-			options.onUploadStart();
-			file.form.target = iframeID;
-			file.form.submit();
-		}
-	});
-}
 
 function AjaxError (max) {
 	max = max || 1;
@@ -174,12 +141,12 @@ function getJSON (url, form) {
 		url : url,
 		async: false,
 		success : function (data, status) {result = data;},
-		data : (form?$(form).serialize():{}),
+		data : (form?$(form).serialize():null),
 		dataType : 'json'
 	});
 	return result;
 }
-	
+
 function getMethod (url) {
 	url = '/' + url;
 	var method = '';
@@ -209,8 +176,17 @@ function getPager (pager) {
 	var totalRows = parseInt((pager && pager.totalRows) || jQuery('#totalRows').val() || 0);
 	var limit = parseInt((pager && pager.limit) || jQuery('#limit').val() || 10);
 	var offset = parseInt((pager && pager.offset) || jQuery('#offset').val() || 1);
-	var totalPage = Math.floor(totalRows / limit) + 1;
-	var currentPage = (totalRows == 0) ? 0 : Math.floor(offset / limit) + 1;
+	var totalPage, currentPage;
+	if (totalRows % limit == 0) {
+		totalPage = totalRows / limit;
+	} else {
+		totalPage = (totalRows - totalRows % limit) / limit + 1;
+	}
+	if (totalRows == 0) {
+		currentPage = 0;
+	} else {
+		currentPage = (offset - offset % limit) / limit + 1;
+	}
 	return {
 		totalRows : totalRows,
 		limit : limit,
@@ -223,19 +199,22 @@ function getPager (pager) {
 	}
 }
 
-function getPagerHTML (pager) {
-	var html = '<ul>';
+function getPagerHTML (pager) {	
 	pager = getPager(pager);
-	if (pager.hasPrev) {
-		html += '<li><a href="javascript:goFirstPage();">' + JPT.ctx.lang['pager.first'] + '</a></li>';
-		html += '<li><a href="javascript:goPrevPage();">' + JPT.ctx.lang['pager.prev'] + '</a></li>';
+	if (pager.totalRows > 0) {
+		var html = '<ul><li>' + pager.currentPage + '/' + pager.totalPage + '</li>';
+		if (pager.hasPrev) {
+			html += '<li><a href="javascript:goFirstPage();">' + JPT.ctx.lang['pager.first'] + '</a></li>';
+			html += '<li><a href="javascript:goPrevPage();">' + JPT.ctx.lang['pager.prev'] + '</a></li>';
+		}
+		if (pager.hasNext) {
+			html += '<li><a href="javascript:goNextPage();">' + JPT.ctx.lang['pager.next'] + '</a></li>';
+			html += '<li><a href="javascript:goLastPage();">' + JPT.ctx.lang['pager.last'] + '</a></li>';
+		}
+		html += '</ul>';
+		return html;
 	}
-	if (pager.hasNext) {
-		html += '<li><a href="javascript:goNextPage();">' + JPT.ctx.lang['pager.next'] + '</a></li>';
-		html += '<li><a href="javascript:goLastPage();">' + JPT.ctx.lang['pager.last'] + '</a></li>';
-	}
-	html += '</ul>';
-	return html;
+	return '';
 }
 
 function getServerUrl (url, method, ext) {
@@ -244,6 +223,30 @@ function getServerUrl (url, method, ext) {
 		re = /\/(pages\/\w+\/)\w+((-\w+)?(\/\d+)?)\.html/;		
 	}
 	return url.replace(re, '/server/$1' + method + '$2.' + $V(ext, 'json'));;
+}
+
+function getServerUrl2 (url) {
+	var method = getMethod(url);
+	var serverUrl = getServerUrl(url, method);
+	if (serverUrl.indexOf('?') != -1) {
+		return serverUrl + '&method:' + method + '=';
+	}
+	return serverUrl + '?method:' + method + '=';
+}
+
+function getTimeStr (millisecond, format) {
+	if (!millisecond) {
+		return '';
+	}
+	millisecond = parseInt(millisecond);
+	if (isNaN(millisecond)) {
+		return '';
+	}
+	var time = new Date();
+	time.setTime(millisecond);
+	
+	loadCalendar();
+	return time.print(format || '%Y-%m-%d %H:%M');
 }
 
 function goFirstPage () {
@@ -314,8 +317,6 @@ function loadContext (root) {
 	loadScripts2([(root?'':'../../') + 'server/scripts/context.js']);
 	loadScripts2([
 		JPT.ctx.base + '/server/scripts/lang.js',
-		JPT.ctx.base + '/server/scripts/dictionary.js',
-		JPT.ctx.base + '/server/scripts/constants.js',
 		JPT.ctx.base + '/scripts/template.js?v=1.0.38'
 	]);
 }
@@ -333,14 +334,11 @@ function loadConstants () {
 
 function loadDialog () {
 	var scripts = [];
-	if (!allScripts['jquery.dimensions.js']) {
-		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/jquery.dimensions.js');
+	if (!allScripts['ui.core.js']) {
+		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.core.js');
 	}
 	if (!allScripts['ui.dialog.js']) {
 		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.dialog.js');
-	}
-	if (!allScripts['ui.mouse.js']) {
-		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.mouse.js');
 	}
 	if (!allScripts['ui.resizable.js']) {
 		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.resizable.js');
@@ -380,10 +378,22 @@ function loadDicts () {
 	return dicts;
 }
 
+function loadFlash () {
+	if (!allScripts['swfobject.js']) {
+		loadScripts2([JPT.ctx.base + '/scripts/swfobject.js']);
+	}
+}
+
+function loadJSON2 () {
+	if (!allScripts['json2.js']) {
+		loadScripts2([JPT.ctx.base + '/scripts/json2.js']);
+	}
+}
+
 function loadNav (hasTree) {
 	var scripts = [];
-	if (!allScripts['jquery.dimensions.js']) {
-		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/jquery.dimensions.js');
+	if (!allScripts['ui.core.js']) {
+		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.core.js');
 	}
 	if (!allScripts['ui.accordion.js']) {
 		scripts.push(JPT.ctx.base + '/scripts/jquery.ui/ui.accordion.js');
@@ -492,6 +502,72 @@ function setupCalendar (o) {
 	}
 	loadCalendar();
 	Calendar.setup(options);
+}
+	
+function setupUploader (o) {
+	var options = jQuery.extend({
+	    button : 'upload',
+	    file : 'file',
+		onUploadStart : function () {},
+		onUploadCompleted : function (data) {}
+	}, o);
+	
+	$($ID(options.button)).click(function () {
+		var file = $($ID(options.file))[0];
+		if (file && file.value) {
+			var iframeID = 'secretIframe';
+			var iframe = $($ID(iframeID));
+			if (iframe.length == 0) {
+				$('body').append('<iframe src="javascript:void(0)" frameborder="0" width="0" height="0" id="' + iframeID + '" name="' + iframeID + '"></iframe>');
+				iframe = $($ID(iframeID));
+				iframe.css({'width':0,'height':0,'border':0});
+			}
+			iframe.load(function () {
+				if ($('body',$(this).contents()).html().indexOf('j_acegi_security_check') != -1) {
+					alert(JPT.ctx.lang['tip.timeout']);
+					window.top.location = JPT.ctx.base + '/j_acegi_logout';
+				}
+				$(this).unbind('load');
+			});
+			iframe[0].onUploadCompleted = options.onUploadCompleted;
+			options.onUploadStart();
+			file.form.target = iframeID;
+			file.form.submit();
+		}
+	});
+}
+
+function setupFlash (o) {
+	loadFlash();
+	var options = jQuery.extend({
+		id : o.name,
+	    w : '100%',
+	    h : '100%',
+	    ver : '9',
+		variables : {},
+		params : {}
+	}, o);
+	var so = new SWFObject(
+		JPT.ctx.base + '/scripts/flash/' + options.name + '.swf',
+		options.id,
+		options.w,
+		options.h,
+		options.ver,
+		options.c,
+		options.quality,
+		options.xiRedirectUrl,
+		options.redirectUrl,
+		options.detectKey
+	);
+	so.setAttribute('codebase', JPT.ctx.base + '/cabs/swflash.cab#version=9,0,0,0');
+	so.addParam('allowScriptAccess', 'always');
+	for (var name in options.variables) {
+		so.addVariable(name, options.variables[name]);
+	}	
+	for (var name in options.params) {
+		so.addParam(name, options.params[name]);
+	}
+	so.write(options.wrapper);
 }
 
 function sortByOrder (data, parentProperty, orderProperty) {

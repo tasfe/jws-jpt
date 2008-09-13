@@ -39,9 +39,10 @@
 	-->
 	
 	<insert id="addDictionary">
-        INSERT INTO t_dictionary(
+		INSERT INTO t_dictionary(
 			name,
 			assc_names,
+			value,
         	text,
         	descr,
 			parent_id,
@@ -49,6 +50,7 @@
         ) VALUES (
 			#name#,
 			#asscNames#,
+			(SELECT CASE WHEN t.maxvalue IS NULL THEN 0 ELSE t.maxvalue+1 END FROM (SELECT MAX(value) AS maxvalue FROM t_dictionary WHERE parent_id=#parentId#) t),
         	#text#,
         	#descr#,
 			#parentId#,

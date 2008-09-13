@@ -19,6 +19,12 @@ li {
 	width:600px;
 }
 
+li div label {
+	float:left;
+	padding-left:5px;
+	width:100px;
+}
+
 li fieldset {
 	width:530px;
 }
@@ -34,11 +40,15 @@ label {
 	width:150px;
 }
 
-select,
+select,textarea,
 input.text,
 input.checkbox,
 input.radio {
 	float:left;
+}
+
+textarea {
+	width:370px;
 }
 
 input.text {	
